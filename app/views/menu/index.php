@@ -1,5 +1,6 @@
+
 <!doctype html>
-<html lang="en" data-bs-theme="dark">
+<html lang="es" data-bs-theme="dark">
     <head>
         <title>Menu</title>
         <!-- Required meta tags -->
@@ -16,7 +17,7 @@
         <!-- CSS propio -->
         <link rel="stylesheet" href="/PJF/public/css/style.css">
     </head>
-
+    
     <body>
         <nav class="navbar navbar-expand-lg">
         <div class="container">
@@ -68,41 +69,55 @@
 
         </div>
     </nav>
-    <!-- hero -->
+    <!-- Encabezado menu -->
     <main>
-        <section class="hero">
+        <section class="">
 
-        <div
-            class="container"
-        >
-            <div class="row justify-content-center align-items-center g-2">
+            <div
+                class="container"
+            >
+                
+                <div class="text-center mb-5">
 
-                <div class="col-md-6">
+                    <h1>
+                        Carta 
+                    </h1>
 
-                    <!-- RESERVAR MESA -->
-                    <a href="#" class="btn btn-outline-primary">
-                        Reservar mesa
-                    </a>
+                    <p>
+                        Conoce algunos de nuestros platos.
+                    </p>
 
+            
                 </div>
             </div>
-        </div>
         </section>
         
-        <!-- PRESENTACION -->
+        <!-- CATEGORIAS -->
         <section class="py-5">
-
+            
             <div class="container text-center">
+                
+                <!-- seleccion  de categoria -->
+                <div class="d-flex justify-content-center flex-wrap gap-2">
 
-                <h2>
-                    Bienvenidos
-                </h2>
+                    <button type="button" class="btn btn-primary" data-categoria="todo">
+                        Todo
+                    </button>
+                    <button type="button" class="btn btn-outline-primary" data-categoria="entradas">
+                        Entradas
+                    </button>
+                    <button type="button" class="btn btn-outline-primary" data-categoria="plato-fuertes">
+                        Plato Fuerte
+                    </button>
+                    <button type="button" class="btn btn-outline-primary" data-categoria="postres">
+                        Postre
+                    </button>
+                    <button type="button" class="btn btn-outline-primary" data-categoria="bebidas">
+                        Bebidas
+                    </button>
 
-                <p>
-                    Somos un restaurante dedicado a ofrecer
-                    una 
-                </p>
-
+                </div>
+                
             </div>
 
         </section>
@@ -112,219 +127,44 @@
         <section class="py-5">
             
             <div class="container">
-                <!-- seleccion  de categoria -->
-                
-                <div class="text-center mb-5">
-
-                    <h2>
-                        Carta 
-                    </h2>
-
-                    <p>
-                        Conoce algunos de nuestros platos.
-                    </p>
-
-                </div>
-
-                <div class="row justify-content-center align-items-center g-2">
-
-                <div class="col-md-6">
-
-                    <!-- RESERVAR MESA -->
-                    <a href="#" class="btn btn-outline-primary">
-                        Entras
-                    </a>
-                    <a href="#" class="btn btn-outline-primary">
-                        Plato Fuerte
-                    </a>
-                    <a href="#" class="btn btn-outline-primary">
-                        Postre
-                    </a>
-
-                </div>
-                </div>
-
                 <div class="row">
-
+                    <?php foreach ($productos as $producto):?>
                     <div class="col-md-4 mb-4">
 
-                        <div class="card">
+                        <article class="card" data-categoria="<?= $producto['categoria'] ?>">
 
                             <img
-                                src="/PJF/public/img/plato1.jpg"
+                                src="/PJF/public/img/<?= $producto['imagen'] ?>"
                                 class="card-img-top"
-                                alt="Plato destacado"
+                                alt=<?= $producto['nombre'] ?>
                             >
 
                             <div class="card-body">
 
                                 <h5 class="card-title">
-                                    Plato especial
+                                    <?= $producto['nombre'] ?>
                                 </h5>
 
                                 <p class="card-text">
-                                    Descripción del plato.
+                                    <?= $producto['descripcion'] ?>
                                 </p>
 
                                 <span class="fw-bold">
-                                    $25.000
+                                    <?= $producto['precio'] ?>
                                 </span>
 
-                            </div>
+                                <button type="button" class="btn">
+                                    Agregar
+                                </button>
+                                
 
-                        </div>
+                                
+                            </div>
+                        </article>
 
                     </div>
+                    <?php endforeach;?>
 
-
-                    <div class="col-md-4 mb-4">
-
-                        <div class="card">
-
-                            <img
-                                src="/PJF/public/img/plato2.jpg"
-                                class="card-img-top"
-                                alt="Plato destacado"
-                            >
-
-                            <div class="card-body">
-
-                                <h5 class="card-title">
-                                    Plato de la casa
-                                </h5>
-
-                                <p class="card-text">
-                                    Descripción del plato.
-                                </p>
-
-                                <span class="fw-bold">
-                                    $30.000
-                                </span>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="col-md-4 mb-4">
-
-                        <div class="card">
-
-                            <img
-                                src="/PJF/public/img/plato3.jpg"
-                                class="card-img-top"
-                                alt="Plato destacado"
-                            >
-
-                            <div class="card-body">
-
-                                <h5 class="card-title">
-                                    Especial del día
-                                </h5>
-
-                                <p class="card-text">
-                                    Descripción del plato.
-                                </p>
-
-                                <span class="fw-bold">
-                                    $28.000
-                                </span>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-                    
-                    <div class="col-md-4 mb-4">
-
-                        <div class="card">
-
-                            <img
-                                src="/PJF/public/img/plato4.jpg"
-                                class="card-img-top"
-                                alt="Plato destacado"
-                            >
-
-                            <div class="card-body">
-
-                                <h5 class="card-title">
-                                    Especial del día
-                                </h5>
-
-                                <p class="card-text">
-                                    Descripción del plato.
-                                </p>
-
-                                <span class="fw-bold">
-                                    $28.000
-                                </span>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-                    <div class="col-md-4 mb-4">
-
-                        <div class="card">
-
-                            <img
-                                src="/PJF/public/img/plato5.jpg"
-                                class="card-img-top"
-                                alt="Plato destacado"
-                            >
-
-                            <div class="card-body">
-
-                                <h5 class="card-title">
-                                    Especial del día
-                                </h5>
-
-                                <p class="card-text">
-                                    Descripción del plato.
-                                </p>
-
-                                <span class="fw-bold">
-                                    $28.000
-                                </span>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-                    <div class="col-md-4 mb-4">
-
-                        <div class="card">
-
-                            <img
-                                src="/PJF/public/img/plato6.jpg"
-                                class="card-img-top"
-                                alt="Plato destacado"
-                            >
-
-                            <div class="card-body">
-
-                                <h5 class="card-title">
-                                    Especial del día
-                                </h5>
-
-                                <p class="card-text">
-                                    Descripción del plato.
-                                </p>
-
-                                <span class="fw-bold">
-                                    $28.000
-                                </span>
-
-                            </div>
-
-                        </div>
-
-                    </div>
 
                 </div>
 
@@ -333,5 +173,10 @@
         </section>
 
     </main>
+    <!-- pie -->
+    <footer>
+
+    </footer>
+    <script src="/PJF/public/js/menu.js"></script>
     </body>
 </html>
