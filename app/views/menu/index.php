@@ -100,19 +100,19 @@
                 <!-- seleccion  de categoria -->
                 <div class="d-flex justify-content-center flex-wrap gap-2">
 
-                    <button type="button" class="btn btn-primary" data-categoria="todo">
+                    <button type="button" class="btn btn-primary" data-filtro="todo">
                         Todo
                     </button>
-                    <button type="button" class="btn btn-outline-primary" data-categoria="entradas">
+                    <button type="button" class="btn btn-outline-primary" data-filtro="entradas">
                         Entradas
                     </button>
-                    <button type="button" class="btn btn-outline-primary" data-categoria="plato-fuertes">
+                    <button type="button" class="btn btn-outline-primary" data-filtro="plato-fuertes">
                         Plato Fuerte
                     </button>
-                    <button type="button" class="btn btn-outline-primary" data-categoria="postres">
+                    <button type="button" class="btn btn-outline-primary" data-filtro="postres">
                         Postre
                     </button>
-                    <button type="button" class="btn btn-outline-primary" data-categoria="bebidas">
+                    <button type="button" class="btn btn-outline-primary" data-filtro="bebidas">
                         Bebidas
                     </button>
 
@@ -133,10 +133,10 @@
 
                         <article class="card" data-categoria="<?= $producto['categoria'] ?>">
 
-                            <img
+                            <imgx
                                 src="/PJF/public/img/<?= $producto['imagen'] ?>"
                                 class="card-img-top"
-                                alt=<?= $producto['nombre'] ?>
+                                alt="<?= $producto['nombre'] ?>"
                             >
 
                             <div class="card-body">
