@@ -106,7 +106,7 @@
                     <button type="button" class="btn btn-outline-primary" data-filtro="entradas">
                         Entradas
                     </button>
-                    <button type="button" class="btn btn-outline-primary" data-filtro="plato-fuertes">
+                    <button type="button" class="btn btn-outline-primary" data-filtro="plato-fuerte">
                         Plato Fuerte
                     </button>
                     <button type="button" class="btn btn-outline-primary" data-filtro="postres">
@@ -133,7 +133,7 @@
 
                         <article class="card" data-categoria="<?= $producto['categoria'] ?>">
 
-                            <imgx
+                            <img
                                 src="/PJF/public/img/<?= $producto['imagen'] ?>"
                                 class="card-img-top"
                                 alt="<?= $producto['nombre'] ?>"
@@ -153,7 +153,7 @@
                                     <?= $producto['precio'] ?>
                                 </span>
 
-                                <button type="button" class="btn">
+                                <button type="button" class="btn" data-agregar="<?= $producto['nombre'] ?>">
                                     Agregar
                                 </button>
                                 

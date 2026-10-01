@@ -10,14 +10,14 @@ class MenuModel{
                     'descripcion' => 'Descripción del plato.',
                     'precio' => 25000,
                     'imagen' => 'plato1.jpg',
-                    'categoria' => 'plato-fuertes'
+                    'categoria' => 'plato-fuerte'
                 ],
                 [
                     'nombre' => 'Hamburguesa',
                     'descripcion' => 'Hamburguesa de la casa.',
                     'precio' => 30000,
                     'imagen' => 'plato2.jpg',
-                    'categoria' => 'plato-fuertes'
+                    'categoria' => 'plato-fuerte'
                 ],
                 [
                     'nombre' => 'Postre especial',
