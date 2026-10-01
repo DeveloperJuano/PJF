@@ -91,7 +91,7 @@
                             de forma rápida y sencilla.
                         </p>
                         <!-- BOTON VER MENU  -->
-                        <a href="#" class="btn btn-primary">
+                        <a href="/PJF/menu" class="btn btn-primary">
                             Ver menú
                         </a>
                         <!-- RESERVAR MESA -->

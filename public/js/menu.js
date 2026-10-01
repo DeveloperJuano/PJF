@@ -4,10 +4,39 @@ console.log("conectadoo")
 const botonesCategoria = document.querySelectorAll('[data-filtro]');
 const tarjetas = document.querySelectorAll('[data-categoria]');
 
-// agregar
+/*
+agregar producto
+*/
+//nombre
 const botonesAgregar = document.querySelectorAll('[data-agregar]');
 const pedido = []
 
+const contenedorPedido = document.querySelector('#pedido');
+
+
+
+
+function mostrarPedido(){
+    let total = 0;
+    contenedorPedido.innerHTML = '';
+
+    pedido.forEach(function(producto){
+        
+        const item = document.createElement('p');
+        const subtotal = producto.precio * producto.cantidad
+        total =+ subtotal ;
+        item.textContent = `${producto.nombre} x${producto.cantidad} = ${subtotal}  `;
+        
+
+        contenedorPedido.appendChild(item);
+
+    });
+    const totalPedido = document.createElement('p');
+
+    totalPedido.textContent = `Total: ${total}`;
+
+    contenedorPedido.appendChild(totalPedido);
+}
 /*
 validacion al agregar producto
 */
@@ -15,15 +44,18 @@ botonesAgregar.forEach(function(boton){
 
         boton.addEventListener('click', function(){
 
+
             
             const producto = { 
                 nombre : boton.dataset.agregar,
+                precio : Number(boton.dataset.precio),
                 cantidad : 1
             };
 
             // identidicar si existe mas de un mismo producto
             const productoExistente = pedido.find(function(item){
                 return item.nombre === producto.nombre;
+
             });
 
             if(productoExistente){
@@ -31,6 +63,7 @@ botonesAgregar.forEach(function(boton){
             }else{
                 pedido.push(producto);
             }
+            mostrarPedido();
 
         });
 });

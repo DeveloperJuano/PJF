@@ -121,7 +121,19 @@
             </div>
 
         </section>
+        <!-- Pedido -->
+        <section class="py-5 ">
+            <div
+                class="container"
+            >
+                <h2>Mi pedido</h2>
+                <div id="pedido">
 
+                </div>
+            </div>
+            
+
+        </section>
         
         <!-- PLATOS -->
         <section class="py-5">
@@ -153,7 +165,11 @@
                                     <?= $producto['precio'] ?>
                                 </span>
 
-                                <button type="button" class="btn" data-agregar="<?= $producto['nombre'] ?>">
+                                <button type="button" 
+                                    class="btn" 
+                                    data-agregar="<?= $producto['nombre'] ?>"
+                                    data-precio="<?= $producto['precio'] ?>"
+                                >
                                     Agregar
                                 </button>
                                 
