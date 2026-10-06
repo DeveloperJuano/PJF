@@ -24,7 +24,7 @@ class MenuModel{
                     'descripcion' => 'Postre de la casa.',
                     'precio' => 15000,
                     'imagen' => 'postre1.jpg',
-                    'categoria' => 'postres' 
+                    'categoria' => 'postre' 
                 ]
             ];
         }

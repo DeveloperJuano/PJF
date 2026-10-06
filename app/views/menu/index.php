@@ -109,7 +109,7 @@
                     <button type="button" class="btn btn-outline-primary" data-filtro="plato-fuerte">
                         Plato Fuerte
                     </button>
-                    <button type="button" class="btn btn-outline-primary" data-filtro="postres">
+                    <button type="button" class="btn btn-outline-primary" data-filtro="postre">
                         Postre
                     </button>
                     <button type="button" class="btn btn-outline-primary" data-filtro="bebidas">
@@ -121,6 +121,7 @@
             </div>
 
         </section>
+
         <!-- Pedido -->
         <section class="py-5 ">
             <div
@@ -128,8 +129,12 @@
             >
                 <h2>Mi pedido</h2>
                 <div id="pedido">
-
+                
                 </div>
+
+                <button type="button" id="realizarPedido" class="btn btn-primary mt-3">
+                    Realizar pedido
+                </button>
             </div>
             
 

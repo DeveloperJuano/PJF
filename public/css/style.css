@@ -1,0 +1,317 @@
+
+/* =========================================================
+   GENERAL
+========================================================= */
+
+body {
+    background-color: #151515;
+    color: #f5f5f5;
+    font-family: Arial, sans-serif;
+}
+
+section {
+    position: relative;
+}
+
+
+/* =========================================================
+   NAVBAR
+========================================================= */
+
+.navbar {
+    background-color: #111111;
+    padding: 1rem 0;
+    border-bottom: 1px solid #292929;
+}
+
+.navbar-brand {
+    color: #ffffff;
+    font-size: 1.4rem;
+    font-weight: 700;
+}
+
+.navbar-brand:hover {
+    color: #ffffff;
+}
+
+.nav-link {
+    color: #bdbdbd;
+    margin-left: 1rem;
+    transition: 0.2s;
+}
+
+.nav-link:hover {
+    color: #ffffff;
+}
+
+
+/* =========================================================
+   ENCABEZADO DEL MENÚ
+========================================================= */
+
+main > section:first-child {
+    padding-top: 5rem;
+    padding-bottom: 2rem;
+}
+
+main > section:first-child h1 {
+    font-size: 3.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+main > section:first-child p {
+    color: #a8a8a8;
+    font-size: 1.1rem;
+}
+
+
+/* =========================================================
+   CATEGORÍAS
+========================================================= */
+
+[data-filtro] {
+    border-radius: 50px;
+    padding: 0.65rem 1.4rem;
+
+    border: 1px solid #444;
+    background-color: transparent;
+
+    color: #cfcfcf;
+
+    transition: 0.2s;
+}
+
+[data-filtro]:hover {
+    border-color: #ffffff;
+    color: #ffffff;
+}
+
+[data-filtro].btn-primary {
+    background-color: #ffffff;
+    border-color: #ffffff;
+    color: #111111;
+}
+
+
+/* =========================================================
+   TARJETAS DE PRODUCTOS
+========================================================= */
+
+.card {
+    height: 100%;
+    overflow: hidden;
+
+    background-color: #1d1d1d;
+
+    border: 1px solid #292929;
+    border-radius: 18px;
+
+    transition: transform 0.25s, border-color 0.25s;
+}
+
+.card:hover {
+    transform: translateY(-6px);
+    border-color: #444444;
+}
+
+
+/* =========================================================
+   IMAGEN DEL PRODUCTO
+========================================================= */
+
+.card-img-top {
+    width: 100%;
+    height: 240px;
+
+    object-fit: cover;
+}
+
+
+/* =========================================================
+   CONTENIDO DE LA CARD
+========================================================= */
+
+.card-body {
+    padding: 1.4rem;
+}
+
+.card-title {
+    color: #ffffff;
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 0.6rem;
+}
+
+.card-text {
+    color: #999999;
+    min-height: 45px;
+}
+
+
+/* =========================================================
+   PRECIO
+========================================================= */
+
+.card .fw-bold {
+    display: inline-block;
+
+    margin-top: 0.8rem;
+
+    color: #ffffff;
+    font-size: 1.15rem;
+}
+
+
+/* =========================================================
+   BOTÓN AGREGAR
+========================================================= */
+
+[data-agregar] {
+    float: right;
+
+    border: none;
+    border-radius: 50px;
+
+    padding: 0.55rem 1rem;
+
+    background-color: #ffffff;
+    color: #111111;
+
+    font-weight: 600;
+
+    transition: 0.2s;
+}
+
+[data-agregar]:hover {
+    background-color: #dddddd;
+    transform: scale(1.04);
+}
+
+
+/* =========================================================
+   PEDIDO
+========================================================= */
+
+#pedido {
+    margin-top: 1.5rem;
+
+    padding: 1.5rem;
+
+    background-color: #1d1d1d;
+
+    border: 1px solid #292929;
+    border-radius: 18px;
+}
+
+/* BOTÓN REALIZAR PEDIDO */
+#realizarPedido {
+    margin-top: 1rem;
+    padding: 0.7rem 1.4rem;
+    border: none;
+    border-radius: 50px;
+    background-color: #ffffff;
+    color: #111111;
+    font-weight: 600;
+    transition: 0.2s;
+}
+
+#realizarPedido:hover {
+    background-color: #dddddd;
+    transform: scale(1.03);
+}
+
+/* =========================================================
+   ITEMS DEL PEDIDO
+========================================================= */
+
+.item-pedido {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    padding: 0.8rem 0;
+
+    border-bottom: 1px solid #303030;
+
+    color: #dddddd;
+}
+
+
+/* =========================================================
+   BOTONES DEL PEDIDO
+========================================================= */
+
+.item-pedido button {
+    border: none;
+    border-radius: 8px;
+
+    padding: 0.35rem 0.65rem;
+
+    background-color: #2a2a2a;
+    color: #ffffff;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+.item-pedido button:hover {
+    background-color: #444444;
+}
+
+
+/* =========================================================
+   TOTAL
+========================================================= */
+
+#pedido > p:last-child {
+    margin-top: 1rem;
+    margin-bottom: 0;
+
+    padding-top: 1rem;
+
+    border-top: 1px solid #3a3a3a;
+
+    color: #ffffff;
+    font-size: 1.25rem;
+    font-weight: 700;
+
+    text-align: right;
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+footer {
+    margin-top: 4rem;
+    padding: 2rem 0;
+
+    background-color: #111111;
+
+    border-top: 1px solid #292929;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 768px) {
+
+    main > section:first-child h1 {
+        font-size: 2.5rem;
+    }
+
+    .card-img-top {
+        height: 220px;
+    }
+
+    .item-pedido {
+        flex-wrap: wrap;
+    }
+
+}
+
