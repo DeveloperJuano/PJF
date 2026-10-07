@@ -22,7 +22,13 @@ switch($uri){
         $controller->index();
         break;
     
-    default:
+    case '/reserva':
+        require_once __DIR__.'/../app/controllers/ReservaController.php';
+        $controller = new ReservaController();
+        $controller->index();
+        break;
+    
+    default : 
         http_response_code(404);
         echo "pagina no encontrada";
         break; 

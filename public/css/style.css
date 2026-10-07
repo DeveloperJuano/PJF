@@ -418,3 +418,159 @@ footer {
     background-color: #dddddd;
 }
 
+/* =========================================================
+   MESAS
+========================================================= */
+
+.mesa {
+    position: relative;
+
+    width: 240px;
+    height: 200px;
+
+    margin: 0 auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: transparent;
+
+    cursor: pointer;
+}
+
+/* TABLERO DE LA MESA */
+
+.mesa-centro {
+    width: 180px;
+    height: 120px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    background-color: #1d1d1d;
+
+    border: 2px solid #555;
+    border-radius: 20px;
+
+    text-align: center;
+
+    transition: 0.3s;
+}
+
+/* información */
+
+.mesa-centro h4 {
+    margin-bottom: 0.5rem;
+}
+
+.mesa-centro p {
+    margin-bottom: 0.3rem;
+    color: #aaa;
+}
+
+/* NOMBRE DE LA MESA */
+
+.mesa-superior {
+    position: absolute;
+
+    top: 5px;
+
+    padding: 0.3rem 1rem;
+
+    background-color: #292929;
+
+    border: 1px solid #555;
+    border-radius: 50px;
+
+    font-weight: 600;
+
+    z-index: 2;
+}
+
+/* BOTÓN */
+
+.btn-agregar-mesa {
+    position: absolute;
+
+    bottom: 5px;
+
+    padding: 0.5rem 1.2rem;
+
+    border: none;
+    border-radius: 50px;
+
+    background-color: #ffffff;
+    color: #111111;
+
+    opacity: 0;
+    transform: translateY(10px);
+
+    transition: 0.3s;
+
+    z-index: 3;
+}
+
+/* HOVER */
+
+.mesa:hover .mesa-centro {
+    background-color: #292929;
+    border-color: #ffffff;
+}
+
+.mesa:hover .btn-agregar-mesa {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* =========================================================
+   SILLAS DE LA MESA
+========================================================= */
+
+.mesa::before,
+.mesa::after {
+    content: "";
+    position: absolute;
+
+    width: 45px;
+    height: 35px;
+
+    background-color: #292929;
+    border: 2px solid #555;
+    border-radius: 10px;
+
+    transition: 0.3s;
+}
+
+/* sillas laterales */
+
+.mesa::before {
+    left: 0;
+}
+
+.mesa::after {
+    right: 0;
+}
+
+/* hover */
+
+.mesa:hover::before,
+.mesa:hover::after {
+    background-color: #444;
+    border-color: #ffffff;
+}
+/* disponobilidad */
+.mesa-disponible .mesa-centro {
+    border-color: #555;
+}
+
+.mesa-ocupada .mesa-centro {
+    background-color: #3a2020;
+    border-color: #8b3333;
+}
+.mesa-seleccionada .mesa-centro {
+    border-color: #ffffff;
+    background-color: #292929;
+}
