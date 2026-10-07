@@ -1,38 +1,33 @@
 console.log("conectadoo")
 
+// ==================================================================================================================
+//CONTANTES/VARIABLES
+// ==================================================================================================================
 // categorias
 const botonesCategoria = document.querySelectorAll('[data-filtro]');
 const tarjetas = document.querySelectorAll('[data-categoria]');
 // ==================================================================================================================
 
-/*
-agregar producto
-*/
+
+//agregar producto
 //nombre
 const botonesAgregar = document.querySelectorAll('[data-agregar]');
 const pedido = []
 
 const contenedorPedido = document.querySelector('#pedido');
 const botonRealizarPedido = document.querySelector('#realizarPedido');
-// ==================================================================================================================
 
-botonRealizarPedido.addEventListener('click', function(){
-
-    if (pedido.length === 0) {
-        alert('No hay productos en el pedido.');
-        return;
-    }
-
-    alert('Pedido realizado correctamente.');
-
-});
+// PEDIDO
+const botonAbrirPedido = document.querySelector('#abrirPedido');
+const botonCerrarPedido = document.querySelector('#cerrarPedido');
+const panelPedido = document.querySelector('#panelPedido');
 
 // ==================================================================================================================
-
-
+// FUNCIONES
+// ==================================================================================================================
 
 /*
-funcion que proporciona el pedido en forma de comanda
+proporciona el pedido en forma de comanda
 */
 
 function mostrarPedido(){
@@ -46,6 +41,7 @@ function mostrarPedido(){
     */
     pedido.forEach(function(producto, indice){
     // ==================================================================================================================
+
         // constantes y variables
         const item = document.createElement('div');
 
@@ -57,9 +53,10 @@ function mostrarPedido(){
 
         total += subtotal ;
         item.classList.add('item-pedido')
+        
         // ==================================================================================================================
 
-        // botones y texto
+        // BOTONES DE TEXTO
         item.textContent = `${producto.nombre} x${producto.cantidad} = $${subtotal.toLocaleString('es-CO')}   `;
         botonEliminar.textContent ="Eliminar";
         botonMas.textContent ="+";
@@ -68,16 +65,16 @@ function mostrarPedido(){
 
         // ==================================================================================================================
         /*
-        botones de eventos para eliminar, aumentar o disminuir 
+        BOTONES ELIMAR, AUMENTAR Y ELIMAR CANTIDAD
         */
-        
+
         // eliminar
         botonEliminar.addEventListener('click', function(){
 
             pedido.splice(indice, 1);
             
             mostrarPedido();
-        
+
         });
         // añadir
         botonMas.addEventListener('click', function(){
@@ -121,12 +118,29 @@ function mostrarPedido(){
 }
 
 // ==================================================================================================================
+/*
+abre y cierra el pane del pedido
+*/
 
+botonAbrirPedido.addEventListener('click', function(){
+
+    panelPedido.classList.add('abierto');
+
+});
+botonCerrarPedido.addEventListener('click', function(){
+
+    panelPedido.classList.remove('abierto');
+
+});
+
+
+
+
+// ==================================================================================================================
 
 /*
 validacion al agregar producto
 */
-
 
 botonesAgregar.forEach(function(boton){
 
@@ -158,12 +172,25 @@ botonesAgregar.forEach(function(boton){
         });
 });
 // ==================================================================================================================
+/*
+CONFIRMACION AL REALIZAR PEDIDO
+*/
+botonRealizarPedido.addEventListener('click', function(){
+
+    if (pedido.length === 0) {
+        alert('No hay productos en el pedido.');
+        return;
+    }
+
+    alert('Pedido realizado correctamente.');
+
+});
+
+// ==================================================================================================================
 
 /*
-validacion de categirias
+VALIDACION DE  CATEGORIA
 */
-
-
 
 botonesCategoria.forEach(function(boton){
     // ==================================================================================================================
@@ -201,3 +228,4 @@ botonesCategoria.forEach(function(boton){
 
     });
 });
+

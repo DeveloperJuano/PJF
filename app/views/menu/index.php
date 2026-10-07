@@ -122,23 +122,30 @@
 
         </section>
 
-        <!-- Pedido -->
-        <section class="py-5 ">
-            <div
-                class="container"
-            >
-                <h2>Mi pedido</h2>
-                <div id="pedido">
-                
-                </div>
+        <!-- BOTÓN PEDIDO -->
+        <button type="button" id="abrirPedido">
+            Mi pedido
+        </button>
 
-                <button type="button" id="realizarPedido" class="btn btn-primary mt-3">
-                    Realizar pedido
+        <!-- PANEL PEDIDO -->
+        <aside id="panelPedido">
+
+            <div class="pedido-header">
+                <h2>Mi pedido</h2>
+
+                <button type="button" id="cerrarPedido">
+                    ×
                 </button>
             </div>
-            
 
-        </section>
+            <div id="pedido">
+            </div>
+
+            <button type="button" id="realizarPedido">
+                Realizar pedido
+            </button>
+
+        </aside>
         
         <!-- PLATOS -->
         <section class="py-5">
