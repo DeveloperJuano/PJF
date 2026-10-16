@@ -19,7 +19,7 @@
 
     <body>
         <!-- nav -->
-        <?php require_once __DIR__ . '/../components/navbar.php'; ?><?php require_once __DIR__ . '/../components/navbar.php'; ?>
+        <?php require_once __DIR__ . '/../components/navbar.php'; ?>
         
         <main>
             <section class="">
@@ -62,8 +62,39 @@
                             class="form-control mx-auto"
                             min="1"
                             style="max-width: 200px;"
+                            required
                         >
                         <div id="mensaje-capacidad" class="mt-2"></div>
+                    </div>
+
+                    <!-- FECHA DE RESERVA -->
+                    <div class="mt-4 text-center">
+                        <label for="fecha" class="form-label">
+                            Fecha de la reserva
+                        </label>
+
+                        <input
+                            type="date"
+                            id="fecha"
+                            class="form-control mx-auto"
+                            style="max-width: 250px;"
+                            required
+                        >
+                    </div>
+
+                    <!-- HORA DE RESERVA -->
+                    <div class="mt-4 text-center">
+                        <label for="hora" class="form-label">
+                            Hora de la reserva
+                        </label>
+
+                        <input
+                            type="time"
+                            id="hora"
+                            class="form-control mx-auto"
+                            style="max-width: 250px;"
+                            required
+                        >
                     </div>
                     <div class="row">
                         <?php foreach ($mesas as $mesa):?>
@@ -96,6 +127,26 @@
                             
                         </div>
                         <?php endforeach;?>
+                        
+                        <!-- RESUMEN DE LA RESERVA -->
+                        <div class="text-center mt-5">
+                            <h3>Resumen de la reserva</h3>
+
+                            <div id="resumen-reserva" class="mt-3">
+                                <p>Completa los datos para revisar tu reserva.</p>
+                            </div>
+
+                            <button
+                                type="button"
+                                id="btn-confirmar-reserva"
+                                class="btn btn-primary mt-3"
+                            >
+                                Confirmar reserva
+                            </button>
+
+                            <div id="mensaje-reserva" class="mt-3"></div>
+                        </div>
+
                     </div>
                 </div>
             </section>  
