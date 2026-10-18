@@ -42,6 +42,11 @@
                         Iniciar sesión
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/PJF/admin/mesas">
+                        admin test
+                    </a>
+                </li>
 
             </ul>
 

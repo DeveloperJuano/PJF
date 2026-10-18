@@ -24,9 +24,7 @@
         <main>
             <section class="">
 
-                <div
-                    class="container"
-                >
+                <div class="container">
                     
                     <div class="text-center mb-5">
 
