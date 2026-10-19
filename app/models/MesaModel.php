@@ -1,110 +1,130 @@
 
 <?php
 
+require_once __DIR__ . '/../../config/db.php';
+
 class MesaModel
 {
-    private function inicializarMesas()
-    {
-        if (!isset($_SESSION['mesas'])) {
-            $_SESSION['mesas'] = [
-                [
-                    'numero' => 1,
-                    'capacidad' => 2,
-                    'estado' => 'disponible'
-                ],
-                [
-                    'numero' => 2,
-                    'capacidad' => 4,
-                    'estado' => 'disponible'
-                ],
-                [
-                    'numero' => 3,
-                    'capacidad' => 3,
-                    'estado' => 'ocupada'
-                ],
-                [
-                    'numero' => 4,
-                    'capacidad' => 9,
-                    'estado' => 'disponible'
-                ]
-            ];
-        }
-    }
+// ==================================================================================================
 
+    private PDO $conexion;
+
+    public function __construct()
+    {
+        $db = new Database();
+        $this->conexion = $db->conectar();
+    }
+// ==================================================================================================
+/*
+CONSULTA PARA OPTENER MESA
+RETURN => idMesa, numero, capacidad, estado
+DE MESA
+*/
     public function obtenerMesas()
     {
-        $this->inicializarMesas();
+        $sql = "SELECT idMesa, numero, capacidad, estado
+                FROM mesa
+                ORDER BY numero ASC";
 
-        return $_SESSION['mesas'];
+        $consulta = $this->conexion->query($sql);
+
+        return $consulta->fetchAll();
     }
-
+// ==================================================================================================
+/*
+CONSULTA PARA CREAR MESA
+=> $numero, $capacidad
+INSERT => numero, capacidad, estado
+*/
     public function crearMesa($numero, $capacidad)
     {
-        $this->inicializarMesas();
+        $sql = "INSERT INTO mesa (numero, capacidad, estado)
+                VALUES (:numero, :capacidad, 'disponible')";
 
-        foreach ($_SESSION['mesas'] as $mesa) {
-            if ($mesa['numero'] === $numero) {
+        try {
+            $consulta = $this->conexion->prepare($sql);
+
+            return $consulta->execute([
+                ':numero' => $numero,
+                ':capacidad' => $capacidad
+            ]);
+        } catch (PDOException $e) {
+            if ($e->getCode() === '23000') {
                 return false;
             }
+
+            throw $e;
         }
-
-        $_SESSION['mesas'][] = [
-            'numero' => $numero,
-            'capacidad' => $capacidad,
-            'estado' => 'disponible'
-        ];
-
-        return true;
     }
-    
+// ==================================================================================================
+/*
+CONSULTA PARA ACTUALIZAR MESA
+=> $numero, $capacidad
+UPDATE=>  capacidad
+*/
     public function actualizarCapacidad($numero, $capacidad)
     {
-        $this->inicializarMesas();
+        $sql = "UPDATE mesa
+                SET capacidad = :capacidad
+                WHERE numero = :numero";
 
-        foreach ($_SESSION['mesas'] as &$mesa) {
-            if ($mesa['numero'] === $numero) {
-                $mesa['capacidad'] = $capacidad;
+        $consulta = $this->conexion->prepare($sql);
+        $consulta->execute([
+            ':capacidad' => $capacidad,
+            ':numero' => $numero
+        ]);
 
-                unset($mesa);
-                return true;
-            }
-        }
-
-        unset($mesa);
-        return false;
+        return $consulta->rowCount() > 0;
     }
+// ==================================================================================================
+/*
+CONSULTA PARA CAMBIAR ESTADO DE MESA
+=> $numero, $estado
+UPDATE=>  estado
+*/
+
+    private function cambiarEstado($numero, $estado)
+    {
+        $sql = "UPDATE mesa
+                SET estado = :estado
+                WHERE numero = :numero";
+
+        $consulta = $this->conexion->prepare($sql);
+        $consulta->execute([
+            ':estado' => $estado,
+            ':numero' => $numero
+        ]);
+
+        return $consulta->rowCount() > 0;
+    }
+
+// ==================================================================================================
+/*
+*ES DEPENDIENTE DE FUNCION CAMBIAR ESTADO*
+
+FUNCION PARA DESACTIVAR MESA
+=> $numero
+UPDATE =>, estado
+*/
 
     public function desactivarMesa($numero)
     {
-        $this->inicializarMesas();
-
-        foreach ($_SESSION['mesas'] as &$mesa) {
-            if ($mesa['numero'] === $numero) {
-                $mesa['estado'] = 'inactiva';
-
-                unset($mesa);
-                return true;
-            }
-        }
-
-        unset($mesa);
-        return false;
+        return $this->cambiarEstado($numero, 'inactiva');
     }
+
+// ==================================================================================================
+/*
+*ES DEPENDIENTE DE FUNCION CAMBIAR ESTADO*
+
+FUNCION PARA ACTIVAR MESA
+=> $numero
+UPDATE =>, estado
+*/
+
     public function activarMesa($numero)
     {
-        $this->inicializarMesas();
-
-        foreach ($_SESSION['mesas'] as &$mesa) {
-            if ($mesa['numero'] === $numero) {
-                $mesa['estado'] = 'disponible';
-                unset($mesa);
-                return true;
-            }
-        }
-
-        unset($mesa);
-        return false;
+        return $this->cambiarEstado($numero, 'disponible');
     }
-}
+// ==================================================================================================
 
-?>
+}

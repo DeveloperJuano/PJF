@@ -24,8 +24,7 @@
         <main>
             <section class="">
 
-                <div class="container">
-                    
+                <div class="container">           
                     <div class="text-center mb-5">
 
                         <h1>
@@ -48,6 +47,7 @@
                         <p>No has seleccionado ninguna mesa.</p>
                     </div>
                     <!-- INFORMACION CLIENTE -->
+                    <!-- CANTIDAD DE PERSONAS -->
                     <div class="mt-4 text-center">
                         
                         <label for="personas" class="form-label">
@@ -94,6 +94,7 @@
                             required
                         >
                     </div>
+                    <!-- CARD MESAS -->
                     <div class="row">
                         <?php foreach ($mesas as $mesa):?>
                         <div class="col-md-4 mb-4">
