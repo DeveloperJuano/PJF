@@ -21,9 +21,9 @@
     <!-- NAVBAR -->
     <?php require_once __DIR__ . '/../components/navbar.php'; ?><?php require_once __DIR__ . '/../components/navbar.php'; ?>
 
-    <!-- HERO -->
     <main>
-
+        
+        <!-- HERO -->
         <section class="hero">
 
             <div class="container">

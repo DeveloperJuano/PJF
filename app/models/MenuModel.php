@@ -25,6 +25,20 @@ class MenuModel{
                     'precio' => 15000,
                     'imagen' => 'postre1.jpg',
                     'categoria' => 'postre' 
+                ],
+                [
+                    'nombre' => 'fabricio puto',
+                    'descripcion' => 'Postre de la casa.',
+                    'precio' => 15000,
+                    'imagen' => 'postre1.jpg',
+                    'categoria' => 'postre' 
+                ],
+                [
+                    'nombre' => 'chupa bolas',
+                    'descripcion' => 'Postre de la casa.',
+                    'precio' => 15000,
+                    'imagen' => 'postre1.jpg',
+                    'categoria' => 'postre' 
                 ]
             ];
         }
