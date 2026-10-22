@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="/PJF/public/css/style.css">
 </head>
 <body>
-
+    
     <?php require_once __DIR__ . '/../../components/navbar.php'; ?>
 
     <main class="container py-5">

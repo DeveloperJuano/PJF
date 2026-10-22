@@ -111,7 +111,60 @@ switch ($uri) {
         $controller->activar();
         break;
     // ================================================================================
+    // PANEL ADMINISTRADOR - CATEGORIAS
+
+    case '/admin/menu/categorias':
+        require_once __DIR__ . '/../app/controllers/AdminMenuController.php';
+        $controller = new AdminMenuController();
+        $controller->categorias();
+        break;
+
+    case '/admin/menu/categorias/crear':
+        require_once __DIR__ . '/../app/controllers/AdminMenuController.php';
+        $controller = new AdminMenuController();
+        $controller->crearCategoria();
+        break;
+
+    case '/admin/menu/categorias/actualizar':
+        require_once __DIR__ . '/../app/controllers/AdminMenuController.php';
+        $controller = new AdminMenuController();
+        $controller->actualizarCategoria();
+        break;
+
+    case '/admin/menu/categorias/estado':
+        require_once __DIR__ . '/../app/controllers/AdminMenuController.php';
+        $controller = new AdminMenuController();
+        $controller->cambiarEstadoCategoria();
+        break;
+
     // ================================================================================
+    // PANEL ADMINISTRADOR - PRODUCTOS
+
+    case '/admin/menu/productos':
+        require_once __DIR__ . '/../app/controllers/AdminMenuController.php';
+        $controller = new AdminMenuController();
+        $controller->productos();
+        break;
+
+    case '/admin/menu/productos/crear':
+        require_once __DIR__ . '/../app/controllers/AdminMenuController.php';
+        $controller = new AdminMenuController();
+        $controller->crearProducto();
+        break;
+
+    case '/admin/menu/productos/actualizar':
+        require_once __DIR__ . '/../app/controllers/AdminMenuController.php';
+        $controller = new AdminMenuController();
+        $controller->actualizarProducto();
+        break;
+
+    case '/admin/menu/productos/estado':
+        require_once __DIR__ . '/../app/controllers/AdminMenuController.php';
+        $controller = new AdminMenuController();
+        $controller->cambiarEstadoProducto();
+        break;
+    // ================================================================================
+
     default:
         http_response_code(404);
         echo "pagina no encontrada";

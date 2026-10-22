@@ -2,16 +2,16 @@
 
 require_once __DIR__ . '/../models/MenuModel.php';
 
-class MenuController{
-    
-    public function index(){
-        
+class MenuController
+{
+    public function index()
+    {
         $model = new MenuModel();
-        $productos = $model -> obtenerProducto();
+
+        $productos = $model->obtenerProducto();
+        // obtiene categorias para que asi mismo cambie los botones de index
+        $categorias = $model->obtenerCategorias();
+
         require_once __DIR__ . '/../views/menu/index.php';
     }
-
 }
-
-
-
