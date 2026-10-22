@@ -20,6 +20,8 @@ CONSULTA PARA OPTENER MESA
 RETURN => idMesa, numero, capacidad, estado
 DE MESA
 */
+// ==================================================================================================
+
     public function obtenerMesas()
     {
         $sql = "SELECT idMesa, numero, capacidad, estado
@@ -36,6 +38,8 @@ CONSULTA PARA CREAR MESA
 => $numero, $capacidad
 INSERT => numero, capacidad, estado
 */
+// ==================================================================================================
+
     public function crearMesa($numero, $capacidad)
     {
         $sql = "INSERT INTO mesa (numero, capacidad, estado)
@@ -62,6 +66,8 @@ CONSULTA PARA ACTUALIZAR MESA
 => $numero, $capacidad
 UPDATE=>  capacidad
 */
+// ==================================================================================================
+
     public function actualizarCapacidad($numero, $capacidad)
     {
         $sql = "UPDATE mesa
@@ -82,6 +88,7 @@ CONSULTA PARA CAMBIAR ESTADO DE MESA
 => $numero, $estado
 UPDATE=>  estado
 */
+// ==================================================================================================
 
     private function cambiarEstado($numero, $estado)
     {
@@ -106,6 +113,7 @@ FUNCION PARA DESACTIVAR MESA
 => $numero
 UPDATE =>, estado
 */
+// ==================================================================================================
 
     public function desactivarMesa($numero)
     {
@@ -114,17 +122,20 @@ UPDATE =>, estado
 
 // ==================================================================================================
 /*
-*ES DEPENDIENTE DE FUNCION CAMBIAR ESTADO*
+ES DEPENDIENTE DE FUNCION CAMBIAR ESTADO*
 
 FUNCION PARA ACTIVAR MESA
 => $numero
 UPDATE =>, estado
 */
+// ==================================================================================================
 
     public function activarMesa($numero)
     {
         return $this->cambiarEstado($numero, 'disponible');
     }
 // ==================================================================================================
+
+
 
 }

@@ -46,32 +46,29 @@
         
         <!-- CATEGORIAS -->
         <section class="py-5">
-            
             <div class="container text-center">
-                
-                <!-- seleccion  de categoria -->
+                <!-- Selección dinámica de categorías -->
                 <div class="d-flex justify-content-center flex-wrap gap-2">
 
-                    <button type="button" class="btn btn-primary" data-filtro="todo">
+                    <button type="button"
+                            class="btn btn-primary"
+                            data-filtro="todo">
                         Todo
                     </button>
-                    <button type="button" class="btn btn-outline-primary" data-filtro="entradas">
-                        Entradas
-                    </button>
-                    <button type="button" class="btn btn-outline-primary" data-filtro="plato-fuerte">
-                        Plato Fuerte
-                    </button>
-                    <button type="button" class="btn btn-outline-primary" data-filtro="postre">
-                        Postre
-                    </button>
-                    <button type="button" class="btn btn-outline-primary" data-filtro="bebidas">
-                        Bebidas
-                    </button>
+
+                    <?php foreach ($categorias as $categoria): ?>
+                        <?php if (($categoria['estado'] ?? '') === 'activo'): ?>
+                            <button
+                                type="button"
+                                class="btn btn-outline-primary"
+                                data-filtro="<?= (int) $categoria['idCategoria'] ?>">
+                                <?= htmlspecialchars($categoria['nombre'], ENT_QUOTES, 'UTF-8') ?>
+                            </button>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
 
                 </div>
-                
             </div>
-
         </section>
 
         <!-- BOTÓN PEDIDO -->
@@ -107,7 +104,7 @@
                     <?php foreach ($productos as $producto):?>
                     <div class="col-md-4 mb-4">
 
-                        <article class="card" data-categoria="<?= $producto['categoria'] ?>">
+                        <article class="card" data-categoria="<?= (int) $producto['idCategoria'] ?>">
 
                             <img
                                 src="/PJF/public/img/<?= $producto['imagen'] ?>"
