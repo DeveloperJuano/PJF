@@ -16,69 +16,46 @@
 
         <div class="collapse navbar-collapse" id="navbarNav">
 
+            <?php if (isset($_SESSION['idUsuario'])): ?>
+                <span class="navbar-text saludo-usuario me-auto">
+                    Hola, <?= htmlspecialchars($_SESSION['nombre'], ENT_QUOTES, 'UTF-8') ?>
+                </span>
+            <?php endif; ?>
+
             <ul class="navbar-nav ms-auto">
 
                 <li class="nav-item">
-                    <a class="nav-link" href="/PJF">
-                        Inicio
-                    </a>
+                    <a class="nav-link" href="/PJF">Inicio</a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="/PJF/menu">
-                        Menú
-                    </a>
+                    <a class="nav-link" href="/PJF/menu">Menú</a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="/PJF/reserva">
-                        Reservar mesa
-                    </a>
+                    <a class="nav-link" href="/PJF/reserva">Reservar mesa</a>
                 </li>
-
-
-
 
                 <?php if (isset($_SESSION['idUsuario'])): ?>
 
                     <?php if (($_SESSION['rol'] ?? '') === 'admin'): ?>
-
-                        <!-- <li> del panel del admin-->
                         <li class="nav-item">
-                            <a class="nav-link" href="/PJF/admin/mesas">
-                                admin test
-                            </a>
+                            <a class="nav-link" href="/PJF/admin/mesas">Panel admin</a>
                         </li>
-
                     <?php endif; ?>
 
-                    <!-- <li> con el enlace a /PJF/logout -->
-
                     <li class="nav-item">
-                        <a class="nav-link" href="/PJF/logout">
-                            Cerrar Sesion
-                        </a>
-                    </li>
-
-                    <!-- <li> con el nombre -->
-
-                    <li class="nav-item d-flex align-items-center">
-                        <span class="navbar-text saludo-usuario">
-                            Hola, <?= htmlspecialchars($_SESSION['nombre'], ENT_QUOTES, 'UTF-8')  ?>
-                        </span>
+                        <a class="nav-link" href="/PJF/logout">Cerrar sesión</a>
                     </li>
 
                 <?php else: ?>
 
-                    <!-- <li> para iniciar sesion-->
-
                     <li class="nav-item">
-                        <a class="nav-link" href="/PJF/login">
-                            Iniciar sesión
-                        </a>
+                        <a class="nav-link" href="/PJF/login">Iniciar sesión</a>
                     </li>
 
                 <?php endif; ?>
+
             </ul>
 
         </div>
