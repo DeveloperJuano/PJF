@@ -20,7 +20,7 @@ class AuthController
         $password = $_POST['password'] ?? '';
 
         if ($correo === '' || $password === '') {
-            $_SESSION['mensaje_login'] = 'Ingrese su correo y tu contraseña donchimbo';
+            $_SESSION['mensaje_login'] = 'Ingrese su correo y tu contraseña';
             header('Location: /PJF/login');
             exit;
         }
@@ -29,7 +29,7 @@ class AuthController
         $usuario = $model->buscarPorCorreo($correo);
 
         if (!$usuario || !password_verify($password, $usuario['password']) || $usuario['estado'] !== 'activo') {
-            $_SESSION['mensaje_login'] = 'Su correo o contraseña estan mal chamo';
+            $_SESSION['mensaje_login'] = 'Correo o contraseña erroneos';
             header('Location: /PJF/login');
             exit;
         }
