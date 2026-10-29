@@ -7,25 +7,13 @@ $uri = str_replace('/PJF', '', $uri);
 
 //==============================================
 //confirmacion de admins
-$rutasAdmin = [
-    '/admin/mesas',
-    '/admin/mesas/crear',
-    '/admin/mesas/actualizar-capacidad',
-    '/admin/mesas/desactivar',
-    '/admin/mesas/activar',
-    '/admin/menu/categorias',
-    '/admin/menu/categorias/crear',
-    '/admin/menu/categorias/actualizar',
-    '/admin/menu/categorias/estado',
-    '/admin/menu/productos',
-    '/admin/menu/productos/crear',
-    '/admin/menu/productos/actualizar',
-    '/admin/menu/productos/estado'
-];
 
-if (in_array($uri, $rutasAdmin, true)) {
+$rutasAdmin = ($uri === '/admin' || str_starts_with($uri, '/admin/'));
+
+if ($rutasAdmin) {
     AuthMiddleware::soloAdmin();
 }
+
 //==============================================
 
 switch ($uri) {

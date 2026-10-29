@@ -41,13 +41,17 @@
 
                     <div class="mb-3">
                         <label for="password" class="form-label">Contraseña</label>
-                        <input type="password" class="form-control" id="password" name="password" required>
+                        <div class="input-group">
+                            <input type="password" class="form-control" id="password" name="password" required>
+                            <button type="button" class="btn btn-outline-secondary" id="btn-mostrar-password">Mostrar</button>
+                        </div>
                     </div>
                     <div class="mb-3">
                         <input type="checkbox"  required>
                         <p>acepto <a href=""> terminos y condiciones</a></p>
                         
                     </div>
+
 
                     <button type="submit" class="btn btn-primary">Entrar</button>
 
