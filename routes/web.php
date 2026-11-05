@@ -1,53 +1,105 @@
 <?php
+require_once __DIR__ . '/../app/controllers/AuthMiddleware.php';
 
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
 $uri = str_replace('/PJF', '', $uri);
 
-switch($uri){
+//==============================================
+//confirmacion de admins
+$rutasAdmin = [
+    '/admin/mesas',
+    '/admin/mesas/crear',
+    '/admin/mesas/actualizar-capacidad',
+    '/admin/mesas/desactivar',
+    '/admin/mesas/activar',
+    '/admin/menu/categorias',
+    '/admin/menu/categorias/crear',
+    '/admin/menu/categorias/actualizar',
+    '/admin/menu/categorias/estado',
+    '/admin/menu/productos',
+    '/admin/menu/productos/crear',
+    '/admin/menu/productos/actualizar',
+    '/admin/menu/productos/estado'
+];
+
+if (in_array($uri, $rutasAdmin, true)) {
+    AuthMiddleware::soloAdmin();
+}
+//==============================================
+
+switch ($uri) {
 
     case '':
-        
-// ================================================================================
 
-    // HOME
+        // ================================================================================
+
+        // HOME
     case '/':
-        require_once __DIR__. '/../app/controllers/HomeController.php';
+        require_once __DIR__ . '/../app/controllers/HomeController.php';
 
         $controller = new HomeController();
         $controller->index();
         break;
 
-// ================================================================================
+    // ================================================================================
+
+
+    // Login
+    case '/login':
+        require_once __DIR__ . '/../app/controllers/AuthController.php';
+
+        $controller = new AuthController();
+        $controller->mostrarLogin();
+        break;
+
+
+    // Login-Entrar
+    case '/login/entrar':
+        require_once __DIR__ . '/../app/controllers/AuthController.php';
+
+        $controller = new AuthController();
+        $controller->login();
+        break;
+
+    // Login-Out
+    case '/logout':
+        require_once __DIR__ . '/../app/controllers/AuthController.php';
+
+        $controller = new AuthController();
+        $controller->logout();
+        break;
+
+    // ================================================================================
 
     // MENU
     case '/menu':
-        require_once __DIR__.'/../app/controllers/MenuController.php';
+        require_once __DIR__ . '/../app/controllers/MenuController.php';
 
         $controller = new MenuController();
         $controller->index();
         break;
 
-// ================================================================================
+    // ================================================================================
 
     // RESERVVA DE MESA CLIENTE
-    
+
     case '/reserva':
-        require_once __DIR__.'/../app/controllers/ReservaController.php';
+        require_once __DIR__ . '/../app/controllers/ReservaController.php';
         $controller = new ReservaController();
         $controller->index();
         break;
 
-// ================================================================================
+    // ================================================================================
 
     //PANEL ADMINISTRADOR
     case '/admin/mesas':
-        require_once __DIR__.'/../app/controllers/AdminMesaController.php';
+        require_once __DIR__ . '/../app/controllers/AdminMesaController.php';
         $controller = new AdminMesaController();
         $controller->index();
         break;
 
-// ================================================================================
+    // ================================================================================
 
     //PANEL ADMIN(FUNCION CREAR)
     case '/admin/mesas/crear':
@@ -57,7 +109,7 @@ switch($uri){
         $controller->crear();
         break;
 
-// ================================================================================
+    // ================================================================================
 
     //PANEL ADMIN(FUNCION ACTUALIZAR)
     case '/admin/mesas/actualizar-capacidad':
@@ -66,8 +118,8 @@ switch($uri){
         $controller = new AdminMesaController();
         $controller->actualizarCapacidad();
         break;
-        
-// ================================================================================
+
+    // ================================================================================
     //PANEL ADMIN(FUNCION DESACTIVAR MESA)
     case '/admin/mesas/desactivar':
         require_once __DIR__ . '/../app/controllers/AdminMesaController.php';
@@ -82,14 +134,14 @@ switch($uri){
         $controller = new AdminMesaController();
         $controller->activar();
         break;
-// ================================================================================
+    // ================================================================================
     // PANEL ADMINISTRADOR - CATEGORIAS
 
     case '/admin/menu/categorias':
-    require_once __DIR__ . '/../app/controllers/AdminMenuController.php';
-    $controller = new AdminMenuController();
-    $controller->categorias();
-    break;
+        require_once __DIR__ . '/../app/controllers/AdminMenuController.php';
+        $controller = new AdminMenuController();
+        $controller->categorias();
+        break;
 
     case '/admin/menu/categorias/crear':
         require_once __DIR__ . '/../app/controllers/AdminMenuController.php';
@@ -109,9 +161,9 @@ switch($uri){
         $controller->cambiarEstadoCategoria();
         break;
 
-// ================================================================================
+    // ================================================================================
     // PANEL ADMINISTRADOR - PRODUCTOS
-    
+
     case '/admin/menu/productos':
         require_once __DIR__ . '/../app/controllers/AdminMenuController.php';
         $controller = new AdminMenuController();
@@ -135,12 +187,10 @@ switch($uri){
         $controller = new AdminMenuController();
         $controller->cambiarEstadoProducto();
         break;
-// ================================================================================
+    // ================================================================================
 
-    default : 
+    default:
         http_response_code(404);
         echo "pagina no encontrada";
-        break; 
+        break;
 }
-
-?>
