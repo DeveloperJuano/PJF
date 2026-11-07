@@ -7,7 +7,7 @@ ALTER TABLE usuario
     MODIFY correo VARCHAR(150) NOT NULL,
     MODIFY password VARCHAR(255) NOT NULL,
     MODIFY rol ENUM('admin', 'empleado', 'cliente') NOT NULL,
-    ADD COLUMN telefono VARCHAR(20) NULL,
+    ADD COLUMN telefono VARCHAR(20) NULL,xc   
     ADD COLUMN fechaRegistro DATETIME
         NOT NULL DEFAULT CURRENT_TIMESTAMP;
 
