@@ -40,8 +40,9 @@
 
                     <?php if (($_SESSION['rol'] ?? '') === 'admin'): ?>
                         <li class="nav-item">
-                            <a class="nav-link" href="/PJF/admin/mesas">Panel admin</a>
+                            <a class="nav-link" href="/PJF/admin">Panel admin</a>
                         </li>
+                        
                     <?php endif; ?>
 
                     <li class="nav-item">

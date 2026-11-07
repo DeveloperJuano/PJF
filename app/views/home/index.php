@@ -19,7 +19,7 @@
 <body>
 
     <!-- NAVBAR -->
-    <?php require_once __DIR__ . '/../components/navbar.php'; ?><?php require_once __DIR__ . '/../components/navbar.php'; ?>
+    <?php require_once __DIR__ . '/../components/navbar.php'; ?>
 
     <main>
         

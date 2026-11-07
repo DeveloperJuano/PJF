@@ -91,6 +91,13 @@ switch ($uri) {
         break;
 
     // ================================================================================
+    // INCIO ADMINISTRADOR
+    case'/admin':
+        require_once __DIR__ . '/../app/controllers/AdminController.php';
+        $controller = new AdminController();
+        $controller->index();
+        break;  
+    // ================================================================================
 
     //PANEL ADMINISTRADOR
     case '/admin/mesas':
