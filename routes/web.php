@@ -20,7 +20,8 @@ $rutasAdmin = [
     '/admin/menu/productos',
     '/admin/menu/productos/crear',
     '/admin/menu/productos/actualizar',
-    '/admin/menu/productos/estado'
+    '/admin/menu/productos/estado',
+    '/admin/index'
 ];
 
 if (in_array($uri, $rutasAdmin, true)) {
@@ -43,8 +44,10 @@ switch ($uri) {
         break;
 
     // ================================================================================
+    
+    
 
-
+    // ================================================================================
     // Login
     case '/login':
         require_once __DIR__ . '/../app/controllers/AuthController.php';
