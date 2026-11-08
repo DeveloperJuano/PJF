@@ -1,0 +1,29 @@
+<?php
+
+/*
+AYUDAS PARA LAS VISTAS
+*/
+
+// escapa texto para mostrarlo en HTML sin riesgo de XSS
+if (!function_exists('e')) {
+    function e($valor)
+    {
+        return htmlspecialchars((string) $valor, ENT_QUOTES, 'UTF-8');
+    }
+}
+
+// 24000 => $24.000
+if (!function_exists('dinero')) {
+    function dinero($valor)
+    {
+        return '$' . number_format((float) $valor, 0, ',', '.');
+    }
+}
+
+// segundos => minutos enteros (nunca negativos)
+if (!function_exists('minutos')) {
+    function minutos($segundos)
+    {
+        return intdiv(max(0, (int) $segundos), 60);
+    }
+}

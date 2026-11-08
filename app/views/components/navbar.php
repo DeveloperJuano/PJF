@@ -38,6 +38,12 @@
 
                 <?php if (isset($_SESSION['idUsuario'])): ?>
 
+                    <?php if (in_array(($_SESSION['rol'] ?? ''), ['empleado', 'admin'], true)): ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/PJF/empleado">Panel empleado</a>
+                        </li>
+                    <?php endif; ?>
+
                     <?php if (($_SESSION['rol'] ?? '') === 'admin'): ?>
                         <li class="nav-item">
                             <a class="nav-link" href="/PJF/admin">Panel admin</a>

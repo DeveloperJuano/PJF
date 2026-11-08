@@ -15,6 +15,15 @@ if ($rutasAdmin) {
 }
 
 //==============================================
+//confirmacion de empleados
+
+$rutasEmpleado = ($uri === '/empleado' || str_starts_with($uri, '/empleado/'));
+
+if ($rutasAdmin) {
+    AuthMiddleware::soloEmpleado();
+}
+
+//==============================================
 
 switch ($uri) {
 
@@ -190,8 +199,69 @@ switch ($uri) {
         $controller = new AdminMenuController();
         $controller->cambiarEstadoProducto();
         break;
-    // ================================================================================
 
+    // ================================================================================
+    // PANEL EMPLEADO
+
+
+    // Panel
+    case '/empleado':
+        require_once __DIR__ . '/../app/controllers/EmpleadoPedidoController.php';
+        $controller = new EmpleadoPedidoController();
+        $controller->panel();
+        break;
+
+    // Refresca los pedidos
+    case '/empleado/fragmento':
+        require_once __DIR__ . '/../app/controllers/EmpleadoPedidoController.php';
+        $controller = new EmpleadoPedidoController();
+        $controller->fragmento();
+        break;
+    
+    // Toma pedido
+    case '/empleado/pedidos/nuevo':
+        require_once __DIR__ . '/../app/controllers/EmpleadoPedidoController.php';
+        $controller = new EmpleadoPedidoController();
+        $controller->nuevo();
+        break;
+
+    // Crea pedido
+    case '/empleado/pedidos/crear':
+        require_once __DIR__ . '/../app/controllers/EmpleadoPedidoController.php';
+        $controller = new EmpleadoPedidoController();
+        $controller->panel();
+        break;
+
+    // Confirma los pedidos
+    case '/empleado/pedidos/confirmar':
+        require_once __DIR__ . '/../app/controllers/EmpleadoPedidoController.php';
+        $controller = new EmpleadoPedidoController();
+        $controller->confrmar();
+        break;
+
+    // Cancela un pedido
+    case '/empleado/pedidos/cancelar':
+        require_once __DIR__ . '/../app/controllers/EmpleadoPedidoController.php';
+        $controller = new EmpleadoPedidoController();
+        $controller->cancelar();
+        break;
+
+    // Avanza un pedido de estado
+    case '/empleado':
+        require_once __DIR__ . '/../app/controllers/EmpleadoPedidoController.php';
+        $controller = new EmpleadoPedidoController();
+        $controller->avanzarProducto();
+        break;
+    
+    // Apartado para el pago de pedidos
+    case '/empleado':
+        require_once __DIR__ . '/../app/controllers/EmpleadoPedidoController.php';
+        $controller = new EmpleadoPedidoController();
+        $controller->panel();
+        break;
+
+    // ================================================================================
+    // CASO PARA CUANDO TODO FALLA (404)
     default:
         http_response_code(404);
         echo "pagina no encontrada";

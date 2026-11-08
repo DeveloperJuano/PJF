@@ -58,11 +58,16 @@ class AuthController
         $_SESSION['rol'] = $usuario['rol'];
 
         if ($usuario['rol'] === 'admin') {
-            header('Location: /PJF/admin');
+            $_SESSION['mensaje_login'] = 'Login correcto. Redirigiendo al panel.';
+            header('Location: /PJF/admin/mesas');
             exit;
-        } 
-        header('Location: ' . $paginaOrigen);
-        exit;
+        } elseif ($usuario['rol'] === 'empleado') {
+            header('Location: /PJF/empleado');
+            exit;
+        } else {
+            header('Location: /PJF');
+            exit;
+        }
 
     }
 

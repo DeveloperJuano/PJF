@@ -14,4 +14,21 @@ class AuthMiddleware{
             exit;
         }
     }
+
+    // PROTEGE RUTAS PARA LOS EMPLEADOS
+    public static function soloEmpleado()
+    {
+        if (!isset($_SESSION['idUsuario'])) {
+            header('Location: /PJF/login');
+            exit;
+        }
+
+        $rol = $_SESSION['rol'] ?? '';
+
+        if ($rol !== 'empleado' && $rol !== 'admin') {
+            http_response_code(403);
+            echo 'Acceso denegado';
+            exit;
+        }
+    }
 }
