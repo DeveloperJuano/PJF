@@ -46,6 +46,7 @@
                             <button type="button" class="btn btn-outline-secondary" id="btn-mostrar-password">Mostrar</button>
                         </div>
                     </div>
+<<<<<<< HEAD
                     <div class="mb-3">
                         <input type="checkbox"  required>
                         <p>acepto <a href=""> terminos y condiciones</a></p>
@@ -53,6 +54,9 @@
                     </div>
 
 
+=======
+                    
+>>>>>>> origin/parteJ
                     <button type="submit" class="btn btn-primary">Entrar</button>
 
                 </form>

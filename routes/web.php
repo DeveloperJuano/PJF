@@ -31,9 +31,10 @@ switch ($uri) {
         break;
 
     // ================================================================================
-
-
+    
     // Login
+    
+    // ================================================================================
     case '/login':
         require_once __DIR__ . '/../app/controllers/AuthController.php';
 
@@ -49,6 +50,13 @@ switch ($uri) {
         $controller = new AuthController();
         $controller->login();
         break;
+
+    // login-guardar
+    case '/registro/guardar':
+        require_once __DIR__ . '/../app/controllers/AuthController.php';
+        $controller = new AuthController();
+        $controller->registrar();
+        break ;
 
     // Login-Out
     case '/logout':
@@ -78,6 +86,13 @@ switch ($uri) {
         $controller->index();
         break;
 
+    // ================================================================================
+    // INCIO ADMINISTRADOR
+    case'/admin':
+        require_once __DIR__ . '/../app/controllers/AdminController.php';
+        $controller = new AdminController();
+        $controller->index();
+        break;  
     // ================================================================================
 
     //PANEL ADMINISTRADOR

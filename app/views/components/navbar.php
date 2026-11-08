@@ -40,8 +40,9 @@
 
                     <?php if (($_SESSION['rol'] ?? '') === 'admin'): ?>
                         <li class="nav-item">
-                            <a class="nav-link" href="/PJF/admin/mesas">Panel admin</a>
+                            <a class="nav-link" href="/PJF/admin">Panel admin</a>
                         </li>
+                        
                     <?php endif; ?>
 
                     <li class="nav-item">
@@ -51,7 +52,14 @@
                 <?php else: ?>
 
                     <li class="nav-item">
-                        <a class="nav-link" href="/PJF/login">Iniciar sesión</a>
+                        <button
+                            type="button"
+                            class="nav-link btn btn-link"
+                            data-bs-toggle="modal"
+                            data-bs-target="#authModal"
+                            data-auth-view="login">
+                            Iniciar sesión
+                        </button>
                     </li>
 
                 <?php endif; ?>

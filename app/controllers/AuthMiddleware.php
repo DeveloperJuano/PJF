@@ -1,6 +1,6 @@
 <?php
-class AuthMiddleware
-{
+class AuthMiddleware{
+    // PROTEGE RUTAS EXCLUSIVAS PARA ADMINS
     public static function soloAdmin()
     {
         if (!isset($_SESSION['idUsuario'])) {
