@@ -91,7 +91,7 @@ class AuthController
     }
 
 
-    // VERIFICACION DE MODELO
+    // VERIFICACION DE MODELO registrarUsuario
     public function registrar()
     {   
         //VALIDA SI ES POST
@@ -99,7 +99,22 @@ class AuthController
             header('Location: /PJF/');
             exit;
         }
-        
+        // ================================================
+        // RECUPERAR Y VALIDAR PAGINA ORIGINAL
+        $paginaOrigen = $_POST['paginaOrigen'] ?? '/PJF';
+
+        $paginasPermitidas = [
+            '/PJF',
+            '/PJF/',
+            '/PJF/menu',
+            '/PJF/reserva'
+        ];
+        // VALIDACION DE RUTAS
+        if (!is_string($paginaOrigen) ||
+            !in_array($paginaOrigen, $paginasPermitidas, true)) {
+            $paginaOrigen = '/PJF';
+        }
+        // =================================================
         // RECESION DE DATOS
         $nombre = trim($_POST['nombre'] ?? '');
         $correo = trim($_POST['correo'] ?? '');
@@ -119,37 +134,37 @@ class AuthController
         $confirmarPassword === ''
         ) {
             $_SESSION['mensaje_registro'] = 'Todos los campos son obligatorios.';
-            header('Location: /PJF/registro');
+            header('Location: ' . $paginaOrigen);
             exit;
         }
         // VALIDAR FORMATO DEL CORREO
         if (!filter_var($correo, FILTER_VALIDATE_EMAIL)) {
             $_SESSION['mensaje_registro'] = 'Ingrese un correo electrónico válido.';
-            header('Location: /PJF/registro');
+            header('Location: ' . $paginaOrigen);
             exit;
         }
         // LONGITUD DE LOS DATOS
         if (mb_strlen($nombre) > 100 || strlen($correo) > 150 || strlen($telefono) > 10) {
             $_SESSION['mensaje_registro'] = 'Uno de los campos supera la longitud permitida.';
-            header('Location: /PJF/registro');
+            header('Location: ' . $paginaOrigen);
             exit;
         }
         // VALIDAR  QUE LAS CONTRASENAS CONCIDAN
         if ($password !== $confirmarPassword) {
             $_SESSION['mensaje_registro'] = 'Las contraseñas no coinciden.';
-            header('Location: /PJF/registro');
+            header('Location: ' . $paginaOrigen);
             exit;
         }
         // VALIDAR LONGITUD DE CONTRASENA
         if (strlen($password) < 8) {
             $_SESSION['mensaje_registro'] = 'La contraseña debe tener al menos 8 caracteres.';
-            header('Location: /PJF/registro');
+            header('Location: ' . $paginaOrigen);
             exit;
         }
         // VALIDAR TRAMIENTO DE  DATOS 
         if ($aceptaTratamiento !== '1') {
             $_SESSION['mensaje_registro'] = 'Debe aceptar el tratamiento de datos personales.';
-            header('Location: /PJF/registro');
+            header('Location: ' . $paginaOrigen);
             exit;
         }
         // CONSULTAR DEL METODO BUCAR CORREO SI EXISTE EL INGRESADO
@@ -157,7 +172,7 @@ class AuthController
 
         if ($model->buscarPorCorreo($correo)) {
             $_SESSION['mensaje_registro'] = 'Este correo ya se encuentra registrado.';
-            header('Location: /PJF/registro');
+            header('Location: ' . $paginaOrigen);
             exit;
         }
         // SI PASA TODOS LOS FILTROS HACE EL INTENTE DE REGISTRAR  DATOS
@@ -175,16 +190,16 @@ class AuthController
 
                 $_SESSION['mensaje_exito'] = 'Cuenta creada correctamente. Ya puedes iniciar sesión.';
 
-                header('Location: /PJF/login');
+                header('Location: ' . $paginaOrigen);
                 exit;
 
             } catch (PDOException $e) {
 
                 error_log($e->getMessage());
-
+                // die('ERROR SQL: ' . htmlspecialchars($e->getMessage(), ENT_QUOTES, 'UTF-8'));
                 $_SESSION['mensaje_registro'] = 'No fue posible completar el registro. Inténtalo nuevamente.';
 
-                header('Location: /PJF/registro');
+                header('Location: ' . $paginaOrigen);
                 exit;
             }
         }
