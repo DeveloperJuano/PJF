@@ -20,7 +20,7 @@
     
     <body>
         <!-- nav -->
-        <?php require_once __DIR__ . '/../components/navbar.php'; ?><?php require_once __DIR__ . '/../components/navbar.php'; ?>
+        <?php require_once __DIR__ . '/../components/navbar.php'; ?>
     <!-- Encabezado menu -->
     <main>
         <section class="">
@@ -150,10 +150,11 @@
         </section>
 
     </main>
-    <!-- pie -->
-    <footer>
-
-    </footer>
+    <!-- js de botones -->
     <script src="/PJF/public/js/menu.js"></script>
+    <!-- login flotante -->
+    <?php require_once __DIR__ . '/../components/authModal.php'; ?>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/PJF/public/js/login.js"></script>
     </body>
 </html>

@@ -26,3 +26,20 @@ formLogin.addEventListener('submit', (evento) => {
 
     mensajeJs.classList.add('d-none');
 });
+
+document.addEventListener('DOMContentLoaded', function(){
+    //OBTENER MODAL
+    const modal = document.getElementById('authModal');
+
+    if (!modal){
+        return;
+    }
+
+    // VERIFICAR SI EXISTE UN ERROR DE LOGIN 
+    const errorLogin = modal.dataset.errorLogin;
+    if (errorLogin === 'true'){
+        // ABRE MODAL
+        const authModal = new bootstrap.Modal(modal);
+        authModal.show();
+    }
+});

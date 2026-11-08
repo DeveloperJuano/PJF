@@ -8,6 +8,7 @@ $uri = str_replace('/PJF', '', $uri);
 //==============================================
 //confirmacion de admins
 $rutasAdmin = [
+    '/admin',
     '/admin/mesas',
     '/admin/mesas/crear',
     '/admin/mesas/actualizar-capacidad',
@@ -45,10 +46,9 @@ switch ($uri) {
 
     // ================================================================================
     
-    
-
-    // ================================================================================
     // Login
+    
+    // ================================================================================
     case '/login':
         require_once __DIR__ . '/../app/controllers/AuthController.php';
 
@@ -64,6 +64,13 @@ switch ($uri) {
         $controller = new AuthController();
         $controller->login();
         break;
+
+    // login-guardar
+    case '/registro/guardar':
+        require_once __DIR__ . '/../app/controllers/AuthController.php';
+        $controller = new AuthController();
+        $controller->registrar();
+        break ;
 
     // Login-Out
     case '/logout':

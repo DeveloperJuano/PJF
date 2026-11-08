@@ -12,16 +12,34 @@ class AuthController
     public function login()
     {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            header('Location: /PJF/login');
+            header('Location: /PJF');
             exit;
         }
+        // ===================================================
+        // AYUDA AL LOGIN MODAL A UTILIZAR Y REDIRIGIR A CUALQUIR MODULO 
+        // DENTRO DE SUS RESTRICCION 
+        // RECECION DEL INPUT 
+        $paginaOrigen = $_POST['paginaOrigen'] ?? '/PJF';
+
+        $paginasPermitidas = [
+            '/PJF',
+            '/PJF/',
+            '/PJF/menu',
+            '/PJF/reserva'
+        ];
+
+        // VALIDAR DESTINO
+        if (!in_array($paginaOrigen, $paginasPermitidas, true)) {
+            $paginaOrigen = '/PJF';
+        }
+        // ===================================================
 
         $correo   = trim($_POST['correo'] ?? '');
         $password = $_POST['password'] ?? '';
 
         if ($correo === '' || $password === '') {
             $_SESSION['mensaje_login'] = 'Ingrese su correo y tu contraseña';
-            header('Location: /PJF/login');
+            header('Location: ' . $paginaOrigen);
             exit;
         }
 
@@ -30,7 +48,7 @@ class AuthController
 
         if (!$usuario || !password_verify($password, $usuario['password']) || $usuario['estado'] !== 'activo') {
             $_SESSION['mensaje_login'] = 'Correo o contraseña erroneos';
-            header('Location: /PJF/login');
+            header('Location: ' . $paginaOrigen);
             exit;
         }
 
@@ -40,13 +58,12 @@ class AuthController
         $_SESSION['rol'] = $usuario['rol'];
 
         if ($usuario['rol'] === 'admin') {
-            $_SESSION['mensaje_login'] = 'Login correcto. Redirigiendo al panel.';
             header('Location: /PJF/admin');
             exit;
-        } else {
-            header('Location: /PJF');
-            exit;
-        }
+        } 
+        header('Location: ' . $paginaOrigen);
+        exit;
+
     }
 
     public function logout()
@@ -54,15 +71,32 @@ class AuthController
         $_SESSION = [];
         session_destroy();
 
-        header('Location: /PJF/login');
+        // ELIMINAR COOKIE
+        if (ini_get('session.use_cookies')) {
+            $parametros = session_get_cookie_params();
+
+            setcookie(
+                session_name(),
+                '',
+                time() - 42000,
+                $parametros['path'],
+                $parametros['domain'],
+                $parametros['secure'],
+                $parametros['httponly']
+            );
+        }
+
+        header('Location: /PJF');
         exit;
     }
+
+
     // VERIFICACION DE MODELO
     public function registrar()
     {   
         //VALIDA SI ES POST
         if($_SERVER['REQUEST_METHOD'] !== 'POST'){
-            header('Location: /PJF/registro');
+            header('Location: /PJF/');
             exit;
         }
         

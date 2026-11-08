@@ -2,6 +2,8 @@
 <?php
 $mensajeLogin = $_SESSION['mensaje_login'] ?? null;
 unset($_SESSION['mensaje_login']);
+
+$paginaOrigen = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 ?>
 
 <div
@@ -9,8 +11,9 @@ unset($_SESSION['mensaje_login']);
     id="authModal"
     tabindex="-1"
     aria-labelledby="authModalLabel"
-    aria-hidden="true">
-
+    aria-hidden="true"
+    data-error-login="<?= $mensajeLogin ? 'true' : 'false'?>">
+    
     <div class="modal-dialog modal-dialog-centered">
 
         <div class="modal-content">
@@ -47,6 +50,10 @@ unset($_SESSION['mensaje_login']);
                     action="/PJF/login/entrar"
                     method="POST"
                     novalidate>
+                    <input
+                        type="hidden"
+                        name="paginaOrigen"
+                        value="<?= htmlspecialchars($paginaOrigen, ENT_QUOTES, 'UTF-8') ?>">
 
                     <div class="mb-3">
                         <label for="correo" class="form-label">
