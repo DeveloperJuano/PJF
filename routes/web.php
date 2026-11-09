@@ -96,6 +96,8 @@ switch ($uri) {
         break;
 
     // ================================================================================
+    // =================== ADMINISTRADOR =============================================
+    // ===============================================================================
     // INCIO ADMINISTRADOR
     case'/admin':
         require_once __DIR__ . '/../app/controllers/AdminController.php';
@@ -199,10 +201,27 @@ switch ($uri) {
         $controller = new AdminMenuController();
         $controller->cambiarEstadoProducto();
         break;
+    // ================================================================================
+    // (REGISTRAR EMPLEADO)
+    // MOSTRAR FORMULARIO
+    case '/admin/empleado/registrar':
+        require_once __DIR__ . '/../app/controllers/AdminEmpleadoController.php';
+
+        $controller = new AdminEmpleadoController();
+        $controller->index();
+        break;
+
+    // GUARDAR EMPLEADO
+    case '/admin/empleado/guardar':
+        require_once __DIR__ . '/../app/controllers/AdminEmpleadoController.php';
+
+        $controller = new AdminEmpleadoController();
+        $controller->registrar();
+        break;
 
     // ================================================================================
-    // PANEL EMPLEADO
-
+    // =================     PANEL EMPLEADO  ==========================================
+    // ===============================================================================
 
     // Panel
     case '/empleado':
@@ -236,7 +255,7 @@ switch ($uri) {
     case '/empleado/pedidos/confirmar':
         require_once __DIR__ . '/../app/controllers/EmpleadoPedidoController.php';
         $controller = new EmpleadoPedidoController();
-        $controller->confrmar();
+        $controller->confirmar();
         break;
 
     // Cancela un pedido

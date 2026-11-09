@@ -26,7 +26,7 @@
                 <div
                     class="row justify-content-center align-items-center g-2"
                 >
-                    <div class="col-18 col-md-6 col-lg-4">
+                    <div class="col-12 col-md-6 col-lg-4">
                         <a href="/PJF/admin/mesas"  class="text-decoration-none text-reset">
                         <section class="card p-4 mb-5">
                             <h2 class="h4 mb-3">PANEL MESAS</h2>
@@ -34,7 +34,7 @@
                         </section>
                         </a>
                     </div>
-                    <div class="col-18 col-md-6 col-lg-4">
+                    <div class="col-12 col-md-6 col-lg-4">
                         <a href="/PJF/admin/menu/productos" class="text-decoration-none text-reset">
                         <section class="card p-4 mb-5">
                             <h2 class="h4 mb-3">PANEL MENU</h2>
@@ -42,10 +42,26 @@
                         </section>
                         </a>
                     </div>
-                    <div class="col-18 col-md-6 col-lg-4">
+                    <div class="col-12 col-md-6 col-lg-4">
                         <a href="/PJF/admin/menu/categorias" class="text-decoration-none text-reset">
                         <section class="card p-4 mb-5">
                             <h2 class="h4 mb-3">PANEL CATEGORIAS</h2>
+                            
+                        </section>
+                        </a>
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <a href="/PJF/admin/empleado/registrar" class="text-decoration-none text-reset">
+                        <section class="card p-4 mb-5">
+                            <h2 class="h4 mb-3">REGISTRAR EMPLEADO</h2>
+                            
+                        </section>
+                        </a>
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <a href="/PJF/admin/empleado" class="text-decoration-none text-reset">
+                        <section class="card p-4 mb-5">
+                            <h2 class="h4 mb-3">ADMIN. DE EMPLEADO</h2>
                             
                         </section>
                         </a>

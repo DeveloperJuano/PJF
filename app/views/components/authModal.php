@@ -220,7 +220,12 @@ $paginaOrigen = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
                                 required>
 
                             <label for="aceptaTratamiento" class="form-check-label">
-                                Acepto el tratamiento de mis datos personales.
+                                Acepto el tratamiento de mis datos personales y declaro
+                                haber leído la <a 
+                                href="https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=49981"
+                                target="_blank"
+                                rel="noopener noreferrer">
+                                Ley 1581 de 2012</a>
                             </label>
                         </div>
 

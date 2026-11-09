@@ -20,6 +20,9 @@
     <main class="container py-5">
 
         <header class="mb-5">
+            <a href="/PJF/admin" class="text-secondary text-decoration-none">
+                &larr; Volver al panel administrativo
+            </a>
             <h1>Gestión de mesas</h1>
             <p>Administra las mesas y sus capacidades.</p>
         </header>

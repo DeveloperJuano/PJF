@@ -37,17 +37,19 @@ formLogin.addEventListener('submit', (evento) => {
     mensajeJs.classList.add('d-none');
 });
 
-btnMostrarPassword.addEventListener('click', () => {
-    if (inputPassword.type === 'password') {
-        inputPassword.type = 'text';
-        btnMostrarPassword.textContent = 'Ocultar';
-    }
-    else {
-        inputPassword.type = 'password';
-        btnMostrarPassword.textContent = 'Mostrar';
-    }
-});
-
+if (btnMostrarPassword && inputPassword) {
+    
+    btnMostrarPassword.addEventListener('click', () => {
+        if (inputPassword.type === 'password') {
+            inputPassword.type = 'text';
+            btnMostrarPassword.textContent = 'Ocultar';
+        }
+        else {
+            inputPassword.type = 'password';
+            btnMostrarPassword.textContent = 'Mostrar';
+        }
+    });
+}
 // =====================================================
 // LOGIN MODAL
 // =====================================================
