@@ -27,7 +27,7 @@
                     class="row justify-content-center align-items-center g-2"
                 >
                     <div class="col-12 col-md-6 col-lg-4">
-                        <a href="#"  class="text-decoration-none text-reset">
+                        <a href="/PJF/empleado/pedidos"  class="text-decoration-none text-reset">
                         <section class="card p-4 mb-5">
                             <h2 class="h4 mb-3">PANEL PEDIDOS </h2>
                             

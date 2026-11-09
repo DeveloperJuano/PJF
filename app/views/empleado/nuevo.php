@@ -120,7 +120,7 @@
 
             <div class="d-flex gap-2">
                 <button type="submit" class="btn btn-success">Guardar pedido</button>
-                <a href="/PJF/empleado" class="btn btn-outline-secondary">Volver al panel</a>
+                <a href="/PJF/empleado/panel" class="btn btn-outline-secondary">Volver al panel</a>
             </div>
 
         </form>

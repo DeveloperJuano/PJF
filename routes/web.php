@@ -19,7 +19,7 @@ if ($rutasAdmin) {
 
 $rutasEmpleado = ($uri === '/empleado' || str_starts_with($uri, '/empleado/'));
 
-if ($rutasAdmin) {
+if ($rutasEmpleado) {
     AuthMiddleware::soloEmpleado();
 }
 
@@ -300,8 +300,8 @@ switch ($uri) {
     // =================     PANEL EMPLEADO  ==========================================
     // ===============================================================================
 
-    // Panel
-    case '/empleado':
+    // Panel - Crea pedidos
+    case '/empleado/pedidos':
         require_once __DIR__ . '/../app/controllers/EmpleadoPedidoController.php';
         $controller = new EmpleadoPedidoController();
         $controller->panel();
@@ -325,7 +325,7 @@ switch ($uri) {
     case '/empleado/pedidos/crear':
         require_once __DIR__ . '/../app/controllers/EmpleadoPedidoController.php';
         $controller = new EmpleadoPedidoController();
-        $controller->panel();
+        $controller->crear();
         break;
 
     // Confirma los pedidos
@@ -343,17 +343,17 @@ switch ($uri) {
         break;
 
     // Avanza un pedido de estado
-    case '/empleado':
+    case '/empleado/productos/avanzar':
         require_once __DIR__ . '/../app/controllers/EmpleadoPedidoController.php';
         $controller = new EmpleadoPedidoController();
         $controller->avanzarProducto();
         break;
     
     // Apartado para el pago de pedidos
-    case '/empleado':
+    case '/empleado/pedidos/pagar':
         require_once __DIR__ . '/../app/controllers/EmpleadoPedidoController.php';
         $controller = new EmpleadoPedidoController();
-        $controller->panel();
+        $controller->pagar();
         break;
 
     // ================================================================================

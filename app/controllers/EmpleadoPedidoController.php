@@ -190,7 +190,7 @@ class EmpleadoPedidoController
 // ==================================================================================================
 
     // solo POST y con token CSRF valido; si no, vuelve al panel
-    private function exigirPost($destino = '/PJF/empleado')
+    private function exigirPost($destino = '/PJF/empleado/pedidos')
     {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             header('Location: ' . $destino);
@@ -210,7 +210,7 @@ class EmpleadoPedidoController
     }
 
     // guarda un mensaje y redirige (siempre termina la ejecucion)
-    private function volver($mensaje, $destino = '/PJF/empleado')
+    private function volver($mensaje, $destino = '/PJF/empleado/pedidos')
     {
         $_SESSION['mensaje_empleado'] = $mensaje;
         header('Location: ' . $destino);
