@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Servidor: localhost
--- Tiempo de generación: 18-10-2026 a las 22:51:33
--- Versión del servidor: 10.4.32-MariaDB
--- Versión de PHP: 8.0.30
+-- Host: localhost
+-- Generation Time: Nov 09, 2026 at 01:16 AM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,13 +18,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de datos: `restaurante`
+-- Database: `restaurante`
 --
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `categoria`
+-- Table structure for table `categoria`
 --
 
 CREATE TABLE `categoria` (
@@ -33,25 +33,48 @@ CREATE TABLE `categoria` (
   `estado` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `categoria`
+--
+
+INSERT INTO `categoria` (`idCategoria`, `nombre`, `estado`) VALUES
+(1, 'uygtf', 'activo');
+
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `detallePedido`
+-- Table structure for table `consentimientoDatos`
 --
 
-CREATE TABLE `detallePedido` (
-  `idDetalle` int(11) NOT NULL,
-  `idPedido` int(11) DEFAULT NULL,
-  `idProducto` int(11) DEFAULT NULL,
-  `cantidadProducto` int(11) NOT NULL,
-  `precioUnitario` float NOT NULL,
-  `subtotal` float NOT NULL
+CREATE TABLE `consentimientoDatos` (
+  `idConsentimiento` int(11) NOT NULL,
+  `idUsuario` int(11) NOT NULL,
+  `versionPolitica` varchar(20) NOT NULL,
+  `fechaConsentimiento` datetime NOT NULL DEFAULT current_timestamp(),
+  `aceptado` tinyint(1) NOT NULL,
+  `fechaRevocacion` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `mesa`
+-- Table structure for table `detallePedido`
+--
+
+CREATE TABLE `detallePedido` (
+  `idDetalle` int(11) NOT NULL,
+  `idPedido` int(11) NOT NULL,
+  `idProducto` int(11) NOT NULL,
+  `cantidadProducto` int(11) NOT NULL,
+  `precioUnitario` float NOT NULL,
+  `subtotal` float NOT NULL,
+  `estado` tinyint(4) NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `mesa`
 --
 
 CREATE TABLE `mesa` (
@@ -61,10 +84,17 @@ CREATE TABLE `mesa` (
   `estado` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `mesa`
+--
+
+INSERT INTO `mesa` (`idMesa`, `numero`, `capacidad`, `estado`) VALUES
+(1, 2, 4, 'disponible');
+
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `pago`
+-- Table structure for table `pago`
 --
 
 CREATE TABLE `pago` (
@@ -80,23 +110,37 @@ CREATE TABLE `pago` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `pedido`
+-- Table structure for table `pedido`
 --
 
 CREATE TABLE `pedido` (
   `idPedido` int(11) NOT NULL,
   `idUsuario` int(11) DEFAULT NULL,
-  `idMesa` int(11) DEFAULT NULL,
-  `fecha` date NOT NULL,
-  `hora` time DEFAULT NULL,
-  `estado` varchar(50) DEFAULT NULL,
-  `total` float DEFAULT NULL
+  `idEmpleado` int(11) DEFAULT NULL,
+  `idMesa` int(11) NOT NULL,
+  `nombre` varchar(60) NOT NULL,
+  `estado` tinyint(4) NOT NULL DEFAULT 1,
+  `total` float DEFAULT NULL,
+  `fechaHoraInicio` datetime NOT NULL DEFAULT current_timestamp(),
+  `fechaHoraConfirmado` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `producto`
+-- Table structure for table `pedido_producto`
+--
+
+CREATE TABLE `pedido_producto` (
+  `idPedido_Producto` int(11) NOT NULL,
+  `idPedido` int(11) DEFAULT NULL,
+  `idProducto` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `producto`
 --
 
 CREATE TABLE `producto` (
@@ -109,10 +153,17 @@ CREATE TABLE `producto` (
   `estado` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `producto`
+--
+
+INSERT INTO `producto` (`idProducto`, `idCategoria`, `nombre`, `descripcion`, `precio`, `imagen`, `estado`) VALUES
+(1, 1, 'iojuigiu', 'iohuihui', 23456800, 'images.jpg', 'activo');
+
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `reserva`
+-- Table structure for table `reserva`
 --
 
 CREATE TABLE `reserva` (
@@ -129,67 +180,92 @@ CREATE TABLE `reserva` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `usuario`
+-- Table structure for table `usuario`
 --
 
 CREATE TABLE `usuario` (
   `idUsuario` int(11) NOT NULL,
-  `nombre` varchar(60) DEFAULT NULL,
-  `correo` varchar(60) NOT NULL,
-  `password` varchar(100) NOT NULL,
-  `rol` varchar(50) NOT NULL,
-  `estado` varchar(50) NOT NULL
+  `nombre` varchar(100) NOT NULL,
+  `correo` varchar(150) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `rol` enum('admin','empleado','cliente') NOT NULL,
+  `estado` varchar(50) NOT NULL,
+  `telefono` varchar(20) DEFAULT NULL,
+  `fechaRegistro` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Índices para tablas volcadas
+-- Dumping data for table `usuario`
+--
+
+INSERT INTO `usuario` (`idUsuario`, `nombre`, `correo`, `password`, `rol`, `estado`, `telefono`, `fechaRegistro`) VALUES
+(1, 'Admin', 'admin@admin.com', '$2y$10$zBWza/D99YJCsTseKYHym.wnHl6oEEU1gmogCkloPZBbaNtj5iwEu', 'admin', 'activo', NULL, '2026-11-08 19:14:36'),
+(2, 'Empleado', 'emp@emp.com', '$2y$10$nZTZH.sety11b5dfUBr.b.NjAk.gEJk8aE.jqv4Pe4sr6Qg7N.Vw.', 'empleado', 'activo', NULL, '2026-11-08 19:14:36');
+
+--
+-- Indexes for dumped tables
 --
 
 --
--- Indices de la tabla `categoria`
+-- Indexes for table `categoria`
 --
 ALTER TABLE `categoria`
   ADD PRIMARY KEY (`idCategoria`);
 
 --
--- Indices de la tabla `detallePedido`
+-- Indexes for table `consentimientoDatos`
+--
+ALTER TABLE `consentimientoDatos`
+  ADD PRIMARY KEY (`idConsentimiento`),
+  ADD KEY `fk_consentimiento_usuario` (`idUsuario`);
+
+--
+-- Indexes for table `detallePedido`
 --
 ALTER TABLE `detallePedido`
   ADD PRIMARY KEY (`idDetalle`),
-  ADD KEY `idProducto` (`idProducto`),
-  ADD KEY `idPedido` (`idPedido`);
+  ADD UNIQUE KEY `idPedido` (`idPedido`),
+  ADD KEY `idProducto` (`idProducto`);
 
 --
--- Indices de la tabla `mesa`
+-- Indexes for table `mesa`
 --
 ALTER TABLE `mesa`
   ADD PRIMARY KEY (`idMesa`),
   ADD UNIQUE KEY `numero` (`numero`);
 
 --
--- Indices de la tabla `pago`
+-- Indexes for table `pago`
 --
 ALTER TABLE `pago`
   ADD PRIMARY KEY (`idPago`),
   ADD UNIQUE KEY `idPedido` (`idPedido`);
 
 --
--- Indices de la tabla `pedido`
+-- Indexes for table `pedido`
 --
 ALTER TABLE `pedido`
   ADD PRIMARY KEY (`idPedido`),
   ADD KEY `idUsuario` (`idUsuario`),
-  ADD KEY `idMesa` (`idMesa`);
+  ADD KEY `pedido_ibfk_3` (`idEmpleado`);
 
 --
--- Indices de la tabla `producto`
+-- Indexes for table `pedido_producto`
+--
+ALTER TABLE `pedido_producto`
+  ADD PRIMARY KEY (`idPedido_Producto`),
+  ADD KEY `idPedido` (`idPedido`),
+  ADD KEY `idProducto` (`idProducto`);
+
+--
+-- Indexes for table `producto`
 --
 ALTER TABLE `producto`
   ADD PRIMARY KEY (`idProducto`),
   ADD KEY `idCategoria` (`idCategoria`);
 
 --
--- Indices de la tabla `reserva`
+-- Indexes for table `reserva`
 --
 ALTER TABLE `reserva`
   ADD PRIMARY KEY (`idReserva`),
@@ -197,7 +273,7 @@ ALTER TABLE `reserva`
   ADD KEY `idMesa` (`idMesa`);
 
 --
--- Indices de la tabla `usuario`
+-- Indexes for table `usuario`
 --
 ALTER TABLE `usuario`
   ADD PRIMARY KEY (`idUsuario`),
@@ -205,89 +281,114 @@ ALTER TABLE `usuario`
   ADD KEY `idx_nombre` (`nombre`);
 
 --
--- AUTO_INCREMENT de las tablas volcadas
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT de la tabla `categoria`
+-- AUTO_INCREMENT for table `categoria`
 --
 ALTER TABLE `categoria`
-  MODIFY `idCategoria` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idCategoria` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT de la tabla `detallePedido`
+-- AUTO_INCREMENT for table `consentimientoDatos`
+--
+ALTER TABLE `consentimientoDatos`
+  MODIFY `idConsentimiento` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `detallePedido`
 --
 ALTER TABLE `detallePedido`
   MODIFY `idDetalle` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de la tabla `mesa`
+-- AUTO_INCREMENT for table `mesa`
 --
 ALTER TABLE `mesa`
-  MODIFY `idMesa` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idMesa` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT de la tabla `pago`
+-- AUTO_INCREMENT for table `pago`
 --
 ALTER TABLE `pago`
   MODIFY `idPago` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de la tabla `pedido`
+-- AUTO_INCREMENT for table `pedido`
 --
 ALTER TABLE `pedido`
   MODIFY `idPedido` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de la tabla `producto`
+-- AUTO_INCREMENT for table `pedido_producto`
 --
-ALTER TABLE `producto`
-  MODIFY `idProducto` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `pedido_producto`
+  MODIFY `idPedido_Producto` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de la tabla `reserva`
+-- AUTO_INCREMENT for table `producto`
+--
+ALTER TABLE `producto`
+  MODIFY `idProducto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `reserva`
 --
 ALTER TABLE `reserva`
   MODIFY `idReserva` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de la tabla `usuario`
+-- AUTO_INCREMENT for table `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `idUsuario` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idUsuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- Restricciones para tablas volcadas
+-- Constraints for dumped tables
 --
 
 --
--- Filtros para la tabla `detallePedido`
+-- Constraints for table `consentimientoDatos`
+--
+ALTER TABLE `consentimientoDatos`
+  ADD CONSTRAINT `fk_consentimiento_usuario` FOREIGN KEY (`idUsuario`) REFERENCES `usuario` (`idUsuario`);
+
+--
+-- Constraints for table `detallePedido`
 --
 ALTER TABLE `detallePedido`
   ADD CONSTRAINT `detallePedido_ibfk_1` FOREIGN KEY (`idPedido`) REFERENCES `pedido` (`idPedido`),
   ADD CONSTRAINT `detallePedido_ibfk_2` FOREIGN KEY (`idProducto`) REFERENCES `producto` (`idProducto`);
 
 --
--- Filtros para la tabla `pago`
+-- Constraints for table `pago`
 --
 ALTER TABLE `pago`
   ADD CONSTRAINT `pago_ibfk_1` FOREIGN KEY (`idPedido`) REFERENCES `pedido` (`idPedido`);
 
 --
--- Filtros para la tabla `pedido`
+-- Constraints for table `pedido`
 --
 ALTER TABLE `pedido`
   ADD CONSTRAINT `pedido_ibfk_1` FOREIGN KEY (`idUsuario`) REFERENCES `usuario` (`idUsuario`),
-  ADD CONSTRAINT `pedido_ibfk_2` FOREIGN KEY (`idMesa`) REFERENCES `mesa` (`idMesa`);
+  ADD CONSTRAINT `pedido_ibfk_3` FOREIGN KEY (`idEmpleado`) REFERENCES `usuario` (`idUsuario`);
 
 --
--- Filtros para la tabla `producto`
+-- Constraints for table `pedido_producto`
+--
+ALTER TABLE `pedido_producto`
+  ADD CONSTRAINT `pedido_producto_ibfk_1` FOREIGN KEY (`idPedido`) REFERENCES `pedido` (`idPedido`),
+  ADD CONSTRAINT `pedido_producto_ibfk_2` FOREIGN KEY (`idProducto`) REFERENCES `producto` (`idProducto`);
+
+--
+-- Constraints for table `producto`
 --
 ALTER TABLE `producto`
   ADD CONSTRAINT `producto_ibfk_1` FOREIGN KEY (`idCategoria`) REFERENCES `categoria` (`idCategoria`);
 
 --
--- Filtros para la tabla `reserva`
+-- Constraints for table `reserva`
 --
 ALTER TABLE `reserva`
   ADD CONSTRAINT `reserva_ibfk_1` FOREIGN KEY (`idUsuario`) REFERENCES `usuario` (`idUsuario`),
