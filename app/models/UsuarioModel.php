@@ -77,6 +77,7 @@ class UsuarioModel
             throw $e;
         }
     }
+
     // REGISTRO EMPLEADO Y CONSENTIMIENTO 
     // REGISTRAR EMPLEADO Y CONSENTIMIENTO
     public function registrarEmpleado($nombre, $correo, $telefono, $password, $versionPolitica)
@@ -129,5 +130,53 @@ class UsuarioModel
 
             throw $e;
         }
+    }
+
+    // OBTENRE TODOS LOS EMPLEADOS
+    public function obtenerEmpleados()
+    {
+        $sql = "SELECT idUsuario, nombre, correo, telefono, estado
+                FROM usuario
+                WHERE rol = 'empleado'
+                ORDER BY idUsuario DESC";
+
+        $consulta = $this->conexion->prepare($sql);
+        $consulta->execute();
+
+        return $consulta->fetchAll(PDO::FETCH_ASSOC);
+    }
+    // ACTUALIZAR EMPLEADO
+    public function actualizarEmpleado($idUsuario, $nombre, $correo, $telefono)
+    {
+        $sql = "UPDATE usuario
+                SET nombre = :nombre,
+                    correo = :correo,
+                    telefono = :telefono
+                WHERE idUsuario = :idUsuario
+                AND rol = 'empleado'";
+
+        $consulta = $this->conexion->prepare($sql);
+
+        return $consulta->execute([
+            ':idUsuario' => $idUsuario,
+            ':nombre' => $nombre,
+            ':correo' => $correo,
+            ':telefono' => $telefono
+        ]);
+    }
+    // CAMBIAR ESTADO DEL EMPLEADO
+    public function cambiarEstadoEmpleado($idUsuario, $estado)
+    {
+        $sql = "UPDATE usuario
+                SET estado = :estado
+                WHERE idUsuario = :idUsuario
+                AND rol = 'empleado'";
+
+        $consulta = $this->conexion->prepare($sql);
+
+        return $consulta->execute([
+            ':idUsuario' => $idUsuario,
+            ':estado' => $estado
+        ]);
     }
 }

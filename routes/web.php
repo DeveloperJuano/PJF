@@ -202,7 +202,9 @@ switch ($uri) {
         $controller->cambiarEstadoProducto();
         break;
     // ================================================================================
-    // (REGISTRAR EMPLEADO)
+    // ADMIN EMPLEADO
+    // ==============================================================================
+    
     // MOSTRAR FORMULARIO
     case '/admin/empleado/registrar':
         require_once __DIR__ . '/../app/controllers/AdminEmpleadoController.php';
@@ -218,7 +220,29 @@ switch ($uri) {
         $controller = new AdminEmpleadoController();
         $controller->registrar();
         break;
+    // PANEL ADMINISTRADOR - GESTIONAR EMPLEADOS
+    case '/admin/empleado':
+        require_once __DIR__ . '/../app/controllers/AdminEmpleadoController.php';
 
+        $controller = new AdminEmpleadoController();
+        $controller->adminEmpleados();
+        break;
+
+    // ACTUALIZAR EMPLEADO
+    case '/admin/empleado/actualizar':
+        require_once __DIR__ . '/../app/controllers/AdminEmpleadoController.php';
+
+        $controller = new AdminEmpleadoController();
+        $controller->actualizar();
+        break;
+
+    // ACTIVAR O DESACTIVAR EMPLEADO
+    case '/admin/empleado/estado':
+        require_once __DIR__ . '/../app/controllers/AdminEmpleadoController.php';
+
+        $controller = new AdminEmpleadoController();
+        $controller->cambiarEstado();
+        break;
     // ================================================================================
     // =================     PANEL EMPLEADO  ==========================================
     // ===============================================================================

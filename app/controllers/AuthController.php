@@ -58,7 +58,7 @@ class AuthController
         $_SESSION['rol'] = $usuario['rol'];
         // REDIRECCION A APARTADO POR ROL
         if ($usuario['rol'] === 'admin') {
-            $_SESSION['mensaje_login'] = 'Login correcto. Redirigiendo al panel.';
+            // $_SESSION['mensaje_login'] = 'Login correcto. Redirigiendo al panel.';
             header('Location: /PJF/admin');
             exit;
         } elseif ($usuario['rol'] === 'empleado') {
