@@ -94,7 +94,16 @@ switch ($uri) {
         $controller = new ReservaController();
         $controller->index();
         break;
+    
+    case '/reserva/guardar':
 
+    require_once __DIR__ . '/../app/controllers/ReservaController.php';
+
+    $controller = new ReservaController();
+    $controller->guardar();
+
+    break;
+    
     // ================================================================================
     // =================== ADMINISTRADOR =============================================
     // ===============================================================================
@@ -201,10 +210,27 @@ switch ($uri) {
         $controller = new AdminMenuController();
         $controller->cambiarEstadoProducto();
         break;
+    
+    
+    // =========================================================
+    // ======================ADMIN RESERVAS MESAS
+    // ======================================================================
+    case '/empleado':
+        require_once __DIR__ . '/../app/controllers/EmpleadoController.php';
+        $controller = new EmpleadoController();
+        $controller->index();
+        break;
+    
+    // ABRE PANEL DE RESERVA
+    case '/reservas/administrar':
+    require_once __DIR__ . '/../app/controllers/ReservaAdminController.php';
+
+    $controller = new ReservaAdminController();
+    $controller->index();
+    break;
     // ================================================================================
     // ADMIN EMPLEADO
     // ==============================================================================
-    
     // MOSTRAR FORMULARIO
     case '/admin/empleado/registrar':
         require_once __DIR__ . '/../app/controllers/AdminEmpleadoController.php';
@@ -243,6 +269,33 @@ switch ($uri) {
         $controller = new AdminEmpleadoController();
         $controller->cambiarEstado();
         break;
+    // ================================================================================
+    // ADMINISTRAR RESERVAS/// PARA ADMIN Y EMPLEADO
+    // ==============================================================================
+    case '/reserva/administrar':
+        require_once __DIR__ . '/../app/controllers/ReservaAdminController.php';
+        $controller = new ReservaAdminController();
+        $controller ->index();
+        break;
+    // CANCERLAR Y CONFIMAR RESERVA
+    case '/reserva/confirmar':
+
+        require_once __DIR__ . '/../app/controllers/ReservaAdminController.php';
+
+        $controller = new ReservaAdminController();
+        $controller->confirmar();
+
+        break;
+
+    case '/reserva/cancelar':
+
+        require_once __DIR__ . '/../app/controllers/ReservaAdminController.php';
+
+        $controller = new ReservaAdminController();
+        $controller->cancelar();
+
+        break;
+
     // ================================================================================
     // =================     PANEL EMPLEADO  ==========================================
     // ===============================================================================

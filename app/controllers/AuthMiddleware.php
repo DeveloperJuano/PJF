@@ -4,13 +4,14 @@ class AuthMiddleware{
     public static function soloAdmin()
     {
         if (!isset($_SESSION['idUsuario'])) {
-            header('Location: /PJF/login');
+            header('Location: /PJF');
             exit;
         }
 
         if (($_SESSION['rol'] ?? '') !== 'admin') {
             http_response_code(403);
             echo 'Acceso denegado';
+            header('Location: /PJF');
             exit;
         }
     }
@@ -19,7 +20,7 @@ class AuthMiddleware{
     public static function soloEmpleado()
     {
         if (!isset($_SESSION['idUsuario'])) {
-            header('Location: /PJF/login');
+            header('Location: /PJF');
             exit;
         }
 
@@ -28,6 +29,7 @@ class AuthMiddleware{
         if ($rol !== 'empleado' && $rol !== 'admin') {
             http_response_code(403);
             echo 'Acceso denegado';
+            header('Location: /PJF');
             exit;
         }
     }

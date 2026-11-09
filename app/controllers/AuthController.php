@@ -53,9 +53,11 @@ class AuthController
         }
 
         session_regenerate_id(true);
+        // GUARDA SESION
         $_SESSION['idUsuario'] = $usuario['idUsuario'];
         $_SESSION['nombre'] = $usuario['nombre'];
         $_SESSION['rol'] = $usuario['rol'];
+        
         // REDIRECCION A APARTADO POR ROL
         if ($usuario['rol'] === 'admin') {
             // $_SESSION['mensaje_login'] = 'Login correcto. Redirigiendo al panel.';

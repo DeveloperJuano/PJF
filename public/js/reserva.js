@@ -12,7 +12,7 @@ const mensajeCapacidad = document.querySelector('#mensaje-capacidad');
 // HORA Y FECHA DE LA RESERVA
 const inputFecha = document.querySelector('#fecha');
 const inputHora = document.querySelector('#hora');
-const botonConfirmar = document.querySelector('#btn-confirmar-reserva');
+const formularioReserva = document.querySelector('#form-reserva');
 const resumenReserva = document.querySelector('#resumen-reserva');
 const mensajeReserva = document.querySelector('#mensaje-reserva');
 
@@ -37,13 +37,16 @@ botonesMesa.forEach(boton => {
     boton.addEventListener('click', () => {
 
         // CAPTURA DE DATOS
+        const idMesa = Number(boton.dataset.idMesa);
         const numeroMesa = boton.dataset.mesa;
         const capacidad = boton.dataset.capacidad;
 
         //ARREGLO CON DATOS DE LA MESA SELECCIONADA
         mesaSeleccionada = {
+            idMesa: idMesa,
             numero: numeroMesa,
             capacidad: capacidad
+
         };
         
         inputPersonas.value = '';
@@ -63,6 +66,8 @@ botonesMesa.forEach(boton => {
             mesa.classList.remove('mesa-seleccionada');
         });
         boton.closest('.mesa').classList.add('mesa-seleccionada');
+        actualizarResumen();
+        mensajeReserva.textContent = '';
     });
 
 });
@@ -174,7 +179,7 @@ function actualizarResumen() {
     `;
 }
 
-// Actualizar el resumen cuando cambien los datos.
+// Actualizar el resumen cuando cambien los datos
 [inputPersonas, inputFecha, inputHora].forEach(campo => {
     campo.addEventListener('input', () => {
         mensajeReserva.textContent = '';
@@ -182,18 +187,33 @@ function actualizarResumen() {
     });
 });
 
-// Confirmar la reserva de prueba.
-botonConfirmar.addEventListener('click', () => {
+//  VALIDAR Y ENVIAR RESERVA AL CONTROLADOR
+formularioReserva.addEventListener('submit', (evento) => {
+    
+    // VALIDAR LOS DATOS
     const error = validarReserva();
 
     if (error !== '') {
+        evento.preventDefault();
+
         mensajeReserva.textContent = error;
         actualizarResumen();
+
         return;
     }
 
-    actualizarResumen();
+    // PASAR LOS DATOS AL FORMULARIO
+    document.querySelector('#idMesa').value =
+        mesaSeleccionada.idMesa;
 
-    mensajeReserva.textContent =
-        'Datos válidos. La reserva aún no se ha guardado.';
+    document.querySelector('#personasReserva').value =
+        inputPersonas.value;
+
+    document.querySelector('#fechaReserva').value =
+        inputFecha.value;
+
+    document.querySelector('#horaReserva').value =
+        inputHora.value;
+    console.log('DATOS ENVIADOS:', {
+});
 });
