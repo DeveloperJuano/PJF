@@ -23,6 +23,10 @@ $categoriasActivas = array_filter(
 
 <main class="container py-5">
     <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+        <!-- back -->
+            <a href="/PJF/admin" class="text-secondary text-decoration-none">
+                    &larr; Volver al panel administrativo
+            </a>
         <div>
             <h1>Administrar productos</h1>
             <p>Registra y administra los productos del restaurante.</p>

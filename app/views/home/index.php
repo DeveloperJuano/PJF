@@ -6,20 +6,23 @@
 
     <title>Restaurante</title>
 
-    <!-- Bootstrap 5 -->
-    <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-        rel="stylesheet"
-    >
-
+    <!-- Bootstrap CSS v5.3.8 -->
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+            crossorigin="anonymous"
+        />
+        
     <!-- CSS propio -->
     <link rel="stylesheet" href="/PJF/public/css/style.css">
 </head>
 
 <body>
 
+    <?php require_once __DIR__ . '/../components/authModal.php'; ?>
     <!-- NAVBAR -->
-    <?php require_once __DIR__ . '/../components/navbar.php'; ?><?php require_once __DIR__ . '/../components/navbar.php'; ?>
+    <?php require_once __DIR__ . '/../components/navbar.php'; ?>
 
     <main>
         
@@ -243,9 +246,7 @@
     </footer>
 
 
-    <script
-        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
-    </script>
-
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/PJF/public/js/login.js"></script>
 </body>
 </html>

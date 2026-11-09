@@ -21,6 +21,11 @@ unset($_SESSION['mensaje_menu']);
 
 <main class="container py-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
+        <!-- black al panel -->
+        <a href="/PJF/admin" class="text-secondary text-decoration-none">
+                &larr; Volver al panel administrativo
+        </a>
+
         <div>
             <h1>Administrar categorías</h1>
             <p>Gestiona las categorías de los productos del restaurante.</p>

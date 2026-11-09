@@ -1,53 +1,128 @@
 <?php
+require_once __DIR__ . '/../app/controllers/AuthMiddleware.php';
 
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
 $uri = str_replace('/PJF', '', $uri);
 
-switch($uri){
+//==============================================
+//confirmacion de admins
+
+$rutasAdmin = ($uri === '/admin' || str_starts_with($uri, '/admin/'));
+
+if ($rutasAdmin) {
+    AuthMiddleware::soloAdmin();
+}
+
+//==============================================
+//confirmacion de empleados
+
+$rutasEmpleado = ($uri === '/empleado' || str_starts_with($uri, '/empleado/'));
+
+if ($rutasEmpleado) {
+    AuthMiddleware::soloEmpleado();
+}
+
+//==============================================
+
+switch ($uri) {
 
     case '':
-        
-// ================================================================================
 
-    // HOME
+        // ================================================================================
+
+        // HOME
     case '/':
-        require_once __DIR__. '/../app/controllers/HomeController.php';
+        require_once __DIR__ . '/../app/controllers/HomeController.php';
 
         $controller = new HomeController();
         $controller->index();
         break;
 
-// ================================================================================
+    // ================================================================================
+    
+    // Login
+    
+    // ================================================================================
+    case '/login':
+        require_once __DIR__ . '/../app/controllers/AuthController.php';
+
+        $controller = new AuthController();
+        $controller->mostrarLogin();
+        break;
+
+
+    // Login-Entrar
+    case '/login/entrar':
+        require_once __DIR__ . '/../app/controllers/AuthController.php';
+
+        $controller = new AuthController();
+        $controller->login();
+        break;
+
+    // login-guardar
+    case '/registro/guardar':
+        require_once __DIR__ . '/../app/controllers/AuthController.php';
+        $controller = new AuthController();
+        $controller->registrar();
+        break ;
+
+    // Login-Out
+    case '/logout':
+        require_once __DIR__ . '/../app/controllers/AuthController.php';
+
+        $controller = new AuthController();
+        $controller->logout();
+        break;
+
+    // ================================================================================
 
     // MENU
     case '/menu':
-        require_once __DIR__.'/../app/controllers/MenuController.php';
+        require_once __DIR__ . '/../app/controllers/MenuController.php';
 
         $controller = new MenuController();
         $controller->index();
         break;
 
-// ================================================================================
+    // ================================================================================
 
     // RESERVVA DE MESA CLIENTE
-    
+
     case '/reserva':
-        require_once __DIR__.'/../app/controllers/ReservaController.php';
+        require_once __DIR__ . '/../app/controllers/ReservaController.php';
         $controller = new ReservaController();
         $controller->index();
         break;
+    
+    case '/reserva/guardar':
 
-// ================================================================================
+    require_once __DIR__ . '/../app/controllers/ReservaController.php';
+
+    $controller = new ReservaController();
+    $controller->guardar();
+
+    break;
+    
+    // ================================================================================
+    // =================== ADMINISTRADOR =============================================
+    // ===============================================================================
+    // INCIO ADMINISTRADOR
+    case'/admin':
+        require_once __DIR__ . '/../app/controllers/AdminController.php';
+        $controller = new AdminController();
+        $controller->index();
+        break;  
+    // ================================================================================
 
     //PANEL ADMINISTRADOR
     case '/admin/mesas':
-        require_once __DIR__.'/../app/controllers/AdminMesaController.php';
+        require_once __DIR__ . '/../app/controllers/AdminMesaController.php';
         $controller = new AdminMesaController();
         $controller->index();
         break;
 
-// ================================================================================
+    // ================================================================================
 
     //PANEL ADMIN(FUNCION CREAR)
     case '/admin/mesas/crear':
@@ -57,7 +132,7 @@ switch($uri){
         $controller->crear();
         break;
 
-// ================================================================================
+    // ================================================================================
 
     //PANEL ADMIN(FUNCION ACTUALIZAR)
     case '/admin/mesas/actualizar-capacidad':
@@ -66,8 +141,8 @@ switch($uri){
         $controller = new AdminMesaController();
         $controller->actualizarCapacidad();
         break;
-        
-// ================================================================================
+
+    // ================================================================================
     //PANEL ADMIN(FUNCION DESACTIVAR MESA)
     case '/admin/mesas/desactivar':
         require_once __DIR__ . '/../app/controllers/AdminMesaController.php';
@@ -82,14 +157,14 @@ switch($uri){
         $controller = new AdminMesaController();
         $controller->activar();
         break;
-// ================================================================================
+    // ================================================================================
     // PANEL ADMINISTRADOR - CATEGORIAS
 
     case '/admin/menu/categorias':
-    require_once __DIR__ . '/../app/controllers/AdminMenuController.php';
-    $controller = new AdminMenuController();
-    $controller->categorias();
-    break;
+        require_once __DIR__ . '/../app/controllers/AdminMenuController.php';
+        $controller = new AdminMenuController();
+        $controller->categorias();
+        break;
 
     case '/admin/menu/categorias/crear':
         require_once __DIR__ . '/../app/controllers/AdminMenuController.php';
@@ -109,9 +184,9 @@ switch($uri){
         $controller->cambiarEstadoCategoria();
         break;
 
-// ================================================================================
+    // ================================================================================
     // PANEL ADMINISTRADOR - PRODUCTOS
-    
+
     case '/admin/menu/productos':
         require_once __DIR__ . '/../app/controllers/AdminMenuController.php';
         $controller = new AdminMenuController();
@@ -135,12 +210,156 @@ switch($uri){
         $controller = new AdminMenuController();
         $controller->cambiarEstadoProducto();
         break;
-// ================================================================================
+    
+    
+    // =========================================================
+    // ======================ADMIN RESERVAS MESAS
+    // ======================================================================
+    case '/empleado':
+        require_once __DIR__ . '/../app/controllers/EmpleadoController.php';
+        $controller = new EmpleadoController();
+        $controller->index();
+        break;
+    
+    // ABRE PANEL DE RESERVA
+    case '/reservas/administrar':
+    require_once __DIR__ . '/../app/controllers/ReservaAdminController.php';
 
-    default : 
+    $controller = new ReservaAdminController();
+    $controller->index();
+    break;
+    // ================================================================================
+    // ADMIN EMPLEADO
+    // ==============================================================================
+    // MOSTRAR FORMULARIO
+    case '/admin/empleado/registrar':
+        require_once __DIR__ . '/../app/controllers/AdminEmpleadoController.php';
+
+        $controller = new AdminEmpleadoController();
+        $controller->index();
+        break;
+
+    // GUARDAR EMPLEADO
+    case '/admin/empleado/guardar':
+        require_once __DIR__ . '/../app/controllers/AdminEmpleadoController.php';
+
+        $controller = new AdminEmpleadoController();
+        $controller->registrar();
+        break;
+    // PANEL ADMINISTRADOR - GESTIONAR EMPLEADOS
+    case '/admin/empleado':
+        require_once __DIR__ . '/../app/controllers/AdminEmpleadoController.php';
+
+        $controller = new AdminEmpleadoController();
+        $controller->adminEmpleados();
+        break;
+
+    // ACTUALIZAR EMPLEADO
+    case '/admin/empleado/actualizar':
+        require_once __DIR__ . '/../app/controllers/AdminEmpleadoController.php';
+
+        $controller = new AdminEmpleadoController();
+        $controller->actualizar();
+        break;
+
+    // ACTIVAR O DESACTIVAR EMPLEADO
+    case '/admin/empleado/estado':
+        require_once __DIR__ . '/../app/controllers/AdminEmpleadoController.php';
+
+        $controller = new AdminEmpleadoController();
+        $controller->cambiarEstado();
+        break;
+    // ================================================================================
+    // ADMINISTRAR RESERVAS/// PARA ADMIN Y EMPLEADO
+    // ==============================================================================
+    case '/reserva/administrar':
+        require_once __DIR__ . '/../app/controllers/ReservaAdminController.php';
+        $controller = new ReservaAdminController();
+        $controller ->index();
+        break;
+    // CANCERLAR Y CONFIMAR RESERVA
+    case '/reserva/confirmar':
+
+        require_once __DIR__ . '/../app/controllers/ReservaAdminController.php';
+
+        $controller = new ReservaAdminController();
+        $controller->confirmar();
+
+        break;
+
+    case '/reserva/cancelar':
+
+        require_once __DIR__ . '/../app/controllers/ReservaAdminController.php';
+
+        $controller = new ReservaAdminController();
+        $controller->cancelar();
+
+        break;
+
+    // ================================================================================
+    // =================     PANEL EMPLEADO  ==========================================
+    // ===============================================================================
+
+    // Panel - Crea pedidos
+    case '/empleado/pedidos':
+        require_once __DIR__ . '/../app/controllers/EmpleadoPedidoController.php';
+        $controller = new EmpleadoPedidoController();
+        $controller->panel();
+        break;
+
+    // Refresca los pedidos
+    case '/empleado/fragmento':
+        require_once __DIR__ . '/../app/controllers/EmpleadoPedidoController.php';
+        $controller = new EmpleadoPedidoController();
+        $controller->fragmento();
+        break;
+    
+    // Toma pedido
+    case '/empleado/pedidos/nuevo':
+        require_once __DIR__ . '/../app/controllers/EmpleadoPedidoController.php';
+        $controller = new EmpleadoPedidoController();
+        $controller->nuevo();
+        break;
+
+    // Crea pedido
+    case '/empleado/pedidos/crear':
+        require_once __DIR__ . '/../app/controllers/EmpleadoPedidoController.php';
+        $controller = new EmpleadoPedidoController();
+        $controller->crear();
+        break;
+
+    // Confirma los pedidos
+    case '/empleado/pedidos/confirmar':
+        require_once __DIR__ . '/../app/controllers/EmpleadoPedidoController.php';
+        $controller = new EmpleadoPedidoController();
+        $controller->confirmar();
+        break;
+
+    // Cancela un pedido
+    case '/empleado/pedidos/cancelar':
+        require_once __DIR__ . '/../app/controllers/EmpleadoPedidoController.php';
+        $controller = new EmpleadoPedidoController();
+        $controller->cancelar();
+        break;
+
+    // Avanza un pedido de estado
+    case '/empleado/productos/avanzar':
+        require_once __DIR__ . '/../app/controllers/EmpleadoPedidoController.php';
+        $controller = new EmpleadoPedidoController();
+        $controller->avanzarProducto();
+        break;
+    
+    // Apartado para el pago de pedidos
+    case '/empleado/pedidos/pagar':
+        require_once __DIR__ . '/../app/controllers/EmpleadoPedidoController.php';
+        $controller = new EmpleadoPedidoController();
+        $controller->pagar();
+        break;
+
+    // ================================================================================
+    // CASO PARA CUANDO TODO FALLA (404)
+    default:
         http_response_code(404);
         echo "pagina no encontrada";
-        break; 
+        break;
 }
-
-?>
