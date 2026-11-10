@@ -1,6 +1,8 @@
 <?php
 
 require_once __DIR__ . '/../models/MenuModel.php';
+require_once __DIR__ . '/../helpers/Csrf.php';
+require_once __DIR__ . '/../helpers/vista.php';
 
 class MenuController
 {

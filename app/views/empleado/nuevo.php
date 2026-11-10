@@ -12,6 +12,7 @@
 
     <link rel="stylesheet" href="/PJF/public/css/style.css">
 </head>
+
 <body>
 
     <?php require_once __DIR__ . '/../components/navbar.php'; ?>
@@ -42,6 +43,16 @@
             <!-- DATOS DEL PEDIDO -->
             <div class="row g-3 mb-4">
 
+                <div class="col-12">
+                    <div class="btn-group" role="group" aria-label="Tipo de pedido">
+                        <input type="radio" class="btn-check" name="tipo" id="tipo-local" value="local" checked>
+                        <label class="btn btn-outline-primary" for="tipo-local">En el local</label>
+
+                        <input type="radio" class="btn-check" name="tipo" id="tipo-llevar" value="llevar">
+                        <label class="btn btn-outline-primary" for="tipo-llevar">Para llevar</label>
+                    </div>
+                </div>
+
                 <div class="col-12 col-md-6">
                     <label for="nombre" class="form-label">Nombre del cliente</label>
                     <input
@@ -54,7 +65,7 @@
                     >
                 </div>
 
-                <div class="col-12 col-md-6">
+                <div class="col-12 col-md-6" id="bloque-mesa">
                     <label for="idMesa" class="form-label">Mesa</label>
                     <select class="form-select" id="idMesa" name="idMesa" required>
                         <option value="">Elige una mesa</option>
@@ -64,10 +75,25 @@
                                 Mesa <?= e($mesa['numero']) ?>
                                 (<?= e($mesa['capacidad']) ?> personas)
                                 <?= (int) $mesa['ocupada'] === 1 ? ' · ocupada' : '' ?>
+                                <?= (int) $mesa['reservada'] === 1 ? ' · reservada' : '' ?>
                             </option>
                         <?php endforeach; ?>
 
                     </select>
+                </div>
+
+                <div class="col-12 col-md-6" id="bloque-recogida" hidden>
+                    <label for="recogida" class="form-label">Hora de recogida</label>
+                    <input
+                        type="datetime-local"
+                        class="form-control"
+                        id="recogida"
+                        name="recogida">
+
+                    <div class="form-text">
+                        Déjalo vacío si lo recoge ahora.
+                        Horario: <?= e(HorarioHabil::APERTURA) ?> a <?= e(HorarioHabil::CIERRE) ?>.
+                    </div>
                 </div>
 
             </div>
@@ -120,7 +146,7 @@
 
             <div class="d-flex gap-2">
                 <button type="submit" class="btn btn-success">Guardar pedido</button>
-                <a href="/PJF/empleado/panel" class="btn btn-outline-secondary">Volver al panel</a>
+                <a href="/PJF/empleado" class="btn btn-outline-secondary">Volver al panel</a>
             </div>
 
         </form>
@@ -130,6 +156,8 @@
     <script
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js">
     </script>
+
+    <script src="/PJF/public/js/nuevo_pedido.js"></script>
 
 </body>
 </html>

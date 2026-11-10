@@ -33,4 +33,20 @@ class AuthMiddleware{
             exit;
         }
     }
+
+     // PROTEGE RUTAS DEL CLIENTE (pedidos desde la carta)
+    public static function soloCliente()
+    {
+        if (!isset($_SESSION['idUsuario'])) {
+            $_SESSION['mensaje_pedido'] = 'Inicia sesión para hacer tu pedido.';
+            header('Location: /PJF/menu');
+            exit;
+        }
+
+        if (($_SESSION['rol'] ?? '') !== 'cliente') {
+            $_SESSION['mensaje_pedido'] = 'Solo los clientes pueden pedir desde la carta.';
+            header('Location: /PJF/menu');
+            exit;
+        }
+    }
 }

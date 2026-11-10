@@ -24,6 +24,14 @@ if ($rutasEmpleado) {
 }
 
 //==============================================
+//confirmacion de clientes (pedidos desde la carta)
+
+$rutasCliente = ($uri === '/pedido' || str_starts_with($uri, '/pedido/'));
+
+if ($rutasCliente) {
+    AuthMiddleware::soloCliente();
+}
+//==============================================
 
 switch ($uri) {
 
@@ -298,7 +306,7 @@ switch ($uri) {
 
     // ================================================================================
     // =================     PANEL EMPLEADO  ==========================================
-    // ===============================================================================
+    // ================================================================================
 
     // Panel - Crea pedidos
     case '/empleado/pedidos':
@@ -353,6 +361,28 @@ switch ($uri) {
     case '/empleado/pedidos/pagar':
         require_once __DIR__ . '/../app/controllers/EmpleadoPedidoController.php';
         $controller = new EmpleadoPedidoController();
+        $controller->pagar();
+        break;
+
+    // ================================================================================
+    // =================     PEDIDO DEL CLIENTE  ======================================
+    // ================================================================================
+    
+    case '/pedido/resumen':
+        require_once __DIR__ . '/../app/controllers/ClientePedidoController.php';
+        $controller = new ClientePedidoController();
+        $controller->resumen();
+        break;
+
+    case '/pedido/pago':
+        require_once __DIR__ . '/../app/controllers/ClientePedidoController.php';
+        $controller = new ClientePedidoController();
+        $controller->pago();
+        break;
+
+    case '/pedido/pagar':
+        require_once __DIR__ . '/../app/controllers/ClientePedidoController.php';
+        $controller = new ClientePedidoController();
         $controller->pagar();
         break;
 

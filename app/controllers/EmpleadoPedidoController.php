@@ -5,6 +5,7 @@ require_once __DIR__ . '/../models/MenuModel.php';
 require_once __DIR__ . '/../models/Estados.php';
 require_once __DIR__ . '/../helpers/Csrf.php';
 require_once __DIR__ . '/../helpers/vista.php';
+require_once __DIR__ . '/../helpers/HorarioHabilHelper.php';
 
 /*
 PANEL DEL EMPLEADO (beta)
@@ -65,15 +66,47 @@ class EmpleadoPedidoController
     {
         $this->exigirPost('/PJF/empleado/pedidos/nuevo');
 
-        $nombre = trim($_POST['nombre'] ?? '');
-        $idMesa = filter_input(INPUT_POST, 'idMesa', FILTER_VALIDATE_INT);
+         $nombre = trim($_POST['nombre'] ?? '');
+        $tipo = $_POST['tipo'] ?? 'local';
 
         if ($nombre === '' || mb_strlen($nombre) > 60) {
             $this->volver('Escribe el nombre del cliente (máximo 60 caracteres).', '/PJF/empleado/pedidos/nuevo');
         }
 
-        if ($idMesa === false || $idMesa === null || $idMesa < 1) {
-            $this->volver('Elige una mesa.', '/PJF/empleado/pedidos/nuevo');
+        $idMesa = null;      // NULL = para llevar
+        $programada = null;  // NULL = inmediato
+
+        if ($tipo === 'local') {
+            $idMesa = filter_input(INPUT_POST, 'idMesa', FILTER_VALIDATE_INT);
+
+            if ($idMesa === false || $idMesa === null || $idMesa < 1) {
+                $this->volver('Elige una mesa.', '/PJF/empleado/pedidos/nuevo');
+            }
+        } elseif ($tipo === 'llevar') {
+            // hora de recogida opcional: si viene vacia, el pedido es inmediato
+            $texto = trim($_POST['recogida'] ?? '');
+
+            if ($texto !== '') {
+                $momento = DateTime::createFromFormat('!Y-m-d\TH:i', $texto);
+
+                if (!$momento || $momento->format('Y-m-d\TH:i') !== $texto) {
+                    $this->volver('La fecha y hora de recogida no son válidas.', '/PJF/empleado/pedidos/nuevo');
+                }
+
+                if ($momento <= new DateTime()) {
+                    $this->volver('La hora de recogida debe ser futura.', '/PJF/empleado/pedidos/nuevo');
+                }
+
+                $motivo = HorarioHabil::validar($momento);
+
+                if ($motivo !== null) {
+                    $this->volver($motivo, '/PJF/empleado/pedidos/nuevo');
+                }
+
+                $programada = $momento->format('Y-m-d H:i:00');
+            }
+        } else {
+            $this->volver('Tipo de pedido no válido.', '/PJF/empleado/pedidos/nuevo');
         }
 
         // cantidad[idProducto] => cantidad ; se ignoran las cantidades en 0
@@ -99,7 +132,7 @@ class EmpleadoPedidoController
 
         try {
             $model = new PedidoModel();
-            $idPedido = $model->crearPedido($nombre, $idMesa, $cantidades);
+            $idPedido = $model->crearPedido($nombre, $idMesa, $cantidades, ['programada' => $programada]);
         } catch (DomainException $e) {
             $this->volver($e->getMessage(), '/PJF/empleado/pedidos/nuevo');
         } catch (Throwable $e) {

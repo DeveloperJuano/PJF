@@ -28,8 +28,18 @@ $porPagar = $datos['porPagar'];
                     <div class="card-body">
 
                         <h3 class="h5">
-                            Mesa <?= e($pedido['mesa']) ?> · <?= e($pedido['nombre']) ?>
+                            <?= e(lugar($pedido['mesa'])) ?> · <?= e($pedido['nombre']) ?>
                         </h3>
+
+                        <?php if ($pedido['fechaHoraProgramada']): ?>
+                            <span class="badge text-bg-info">
+                                Recoge: <?= e(fechaCorta($pedido['fechaHoraProgramada'])) ?>
+                            </span>
+                        <?php endif; ?>
+
+                        <?php if ((int) $pedido['pagado'] === 1): ?>
+                            <span class="badge text-bg-success">Pagado en línea</span>
+                        <?php endif; ?>
 
                         <p class="text-secondary small mb-2">
                             Pedido #<?= (int) $pedido['idPedido'] ?>
@@ -94,7 +104,7 @@ $porPagar = $datos['porPagar'];
             <table class="table align-middle">
                 <thead>
                     <tr>
-                        <th>Mesa</th>
+                        <th>Lugar</th>
                         <th>Cliente</th>
                         <th>Pedido</th>
                         <th>Producto</th>
@@ -108,9 +118,14 @@ $porPagar = $datos['porPagar'];
                     <?php foreach ($cola as $fila): ?>
 
                         <tr>
-                            <td><?= e($fila['mesa']) ?></td>
+                            <td><?= e(lugar($fila['mesa'])) ?></td>
                             <td><?= e($fila['cliente']) ?></td>
-                            <td>#<?= (int) $fila['idPedido'] ?></td>
+                            <td>
+                                #<?= (int) $fila['idPedido'] ?>
+                                <?php if ($fila['fechaHoraProgramada']): ?>
+                                    <br><small class="text-info">Recoge <?= e(fechaCorta($fila['fechaHoraProgramada'])) ?></small>
+                                <?php endif; ?>
+                            </td>
                             <td><?= (int) $fila['cantidadProducto'] ?> × <?= e($fila['producto']) ?></td>
                             <td><?= minutos($fila['segundosEspera']) ?> min</td>
                             <td>
@@ -175,8 +190,18 @@ $porPagar = $datos['porPagar'];
                     <div class="card-body">
 
                         <h3 class="h5">
-                            Mesa <?= e($pedido['mesa']) ?> · <?= e($pedido['nombre']) ?>
+                            <?= e(lugar($pedido['mesa'])) ?> · <?= e($pedido['nombre']) ?>
                         </h3>
+
+                        <?php if ($pedido['fechaHoraProgramada']): ?>
+                            <span class="badge text-bg-info">
+                                Recoge: <?= e(fechaCorta($pedido['fechaHoraProgramada'])) ?>
+                            </span>
+                        <?php endif; ?>
+
+                        <?php if ((int) $pedido['pagado'] === 1): ?>
+                            <span class="badge text-bg-success">Pagado en línea</span>
+                        <?php endif; ?>
 
                         <p class="text-secondary small mb-2">
                             Pedido #<?= (int) $pedido['idPedido'] ?>

@@ -2,6 +2,7 @@
 
 require_once __DIR__ . '/../../config/db.php';
 require_once __DIR__ . '/Estados.php';
+require_once __DIR__ . '/../helpers/HorarioHabilHelper.php';
 
 class PedidoModel
 {
@@ -21,7 +22,7 @@ Mesas habilitadas, con un 1 en "ocupada" si tienen algun pedido activo
 (por confirmar, en preparacion o por pagar).
 La ocupacion se calcula con los pedidos, no se guarda en la mesa.
 */
-    public function obtenerMesasConOcupacion()
+        public function obtenerMesasConOcupacion()
     {
         $activos = implode(', ', [
             EstadoPedido::POR_CONFIRMAR,
@@ -29,18 +30,37 @@ La ocupacion se calcula con los pedidos, no se guarda en la mesa.
             EstadoPedido::POR_PAGAR,
         ]);
 
+        // ventana de la reserva, calculada en PHP (la misma hora que usa HorarioHabil)
+        $ahora = new DateTime();
+        $hasta = (clone $ahora)->modify('+' . HorarioHabil::AVISO_RESERVA_MIN . ' minutes');
+        $desde = (clone $ahora)->modify('-' . HorarioHabil::DURACION_RESERVA_MIN . ' minutes');
+
         $sql = "SELECT m.idMesa, m.numero, m.capacidad,
                        EXISTS (
                            SELECT 1
                            FROM pedido p
                            WHERE p.idMesa = m.idMesa
                              AND p.estado IN ($activos)
-                       ) AS ocupada
+                       ) AS ocupada,
+                       EXISTS (
+                           SELECT 1
+                           FROM reserva r
+                           WHERE r.idMesa = m.idMesa
+                             AND r.estado IN ('pendiente', 'confirmada')
+                             AND TIMESTAMP(r.fecha, r.hora) <= :hasta
+                             AND TIMESTAMP(r.fecha, r.hora) > :desde
+                       ) AS reservada
                 FROM mesa m
                 WHERE m.estado <> 'inactiva'
                 ORDER BY m.numero ASC";
 
-        return $this->conexion->query($sql)->fetchAll();
+        $consulta = $this->conexion->prepare($sql);
+        $consulta->execute([
+            ':hasta' => $hasta->format('Y-m-d H:i:s'),
+            ':desde' => $desde->format('Y-m-d H:i:s'),
+        ]);
+
+        return $consulta->fetchAll();
     }
 
 // ==================================================================================================
@@ -62,9 +82,13 @@ Pedidos en un estado dado, cada uno con sus productos en la clave "lineas".
 */
     private function pedidosConLineas($estado)
     {
-        $sql = "SELECT p.idPedido, p.nombre, p.total, p.fechaHoraInicio, m.numero AS mesa
+        $sql = "SELECT p.idPedido, p.nombre, p.total, p.fechaHoraInicio, p.fechaHoraProgramada, m.numero AS mesa, 
+                    EXISTS (
+                        SELECT 1 FROM pago g
+                        WHERE g.idPedido = p.idPedido AND g.estado = 'pagado'
+                    ) AS pagado
                 FROM pedido p
-                INNER JOIN mesa m ON m.idMesa = p.idMesa
+                LEFT JOIN mesa m ON m.idMesa = p.idMesa
                 WHERE p.estado = :estado
                 ORDER BY p.fechaHoraInicio ASC, p.idPedido ASC";
 
@@ -113,14 +137,15 @@ del pedido confirmado hace mas tiempo al mas reciente.
                        m.numero AS mesa,
                        p.nombre AS cliente,
                        p.fechaHoraConfirmado,
-                       (UNIX_TIMESTAMP(NOW()) - UNIX_TIMESTAMP(p.fechaHoraConfirmado)) AS segundosEspera
+                       (UNIX_TIMESTAMP(NOW()) - UNIX_TIMESTAMP(p.fechaHoraConfirmado)) AS segundosEspera,
+                       p.fechaHoraProgramada
                 FROM detallePedido d
                 INNER JOIN pedido p ON p.idPedido = d.idPedido
                 INNER JOIN producto pr ON pr.idProducto = d.idProducto
-                INNER JOIN mesa m ON m.idMesa = p.idMesa
+                LEFT JOIN mesa m ON m.idMesa = p.idMesa
                 WHERE p.estado = :estadoPedido
                   AND d.estado IN (:enCola, :sirviendo)
-                ORDER BY p.fechaHoraConfirmado ASC, d.idDetalle ASC";
+                ORDER BY COALESCE(p.fechaHoraProgramada, p.fechaHoraConfirmado) ASC, d.idDetalle ASC";
 
         $consulta = $this->conexion->prepare($sql);
         $consulta->execute([
@@ -142,7 +167,7 @@ El precio se toma de la base de datos (nunca del formulario) y se copia
 en precioUnitario para conservar el precio historico.
 Devuelve el id del pedido nuevo. Lanza DomainException si algo no es valido.
 */
-    public function crearPedido($nombre, $idMesa, array $cantidades)
+    public function crearPedido($nombre, $idMesa, array $cantidades, array $extra = [])
     {
         if (count($cantidades) === 0) {
             throw new DomainException('Agrega al menos un producto.');
@@ -151,14 +176,16 @@ Devuelve el id del pedido nuevo. Lanza DomainException si algo no es valido.
         $this->conexion->beginTransaction();
 
         try {
-            // mesa existente y habilitada
-            $consultaMesa = $this->conexion->prepare(
-                "SELECT idMesa FROM mesa WHERE idMesa = :idMesa AND estado <> 'inactiva'"
-            );
-            $consultaMesa->execute([':idMesa' => $idMesa]);
+            // mesa existente y habilitada (solo si el pedido tiene mesa)
+            if ($idMesa !== null) {
+                $consultaMesa = $this->conexion->prepare(
+                    "SELECT idMesa FROM mesa WHERE idMesa = :idMesa AND estado <> 'inactiva'"
+                );
+                $consultaMesa->execute([':idMesa' => $idMesa]);
 
-            if (!$consultaMesa->fetch()) {
-                throw new DomainException('La mesa no existe o está inactiva.');
+                if (!$consultaMesa->fetch()) {
+                    throw new DomainException('La mesa no existe o está inactiva.');
+                }
             }
 
             // precios reales de los productos activos
@@ -183,12 +210,18 @@ Devuelve el id del pedido nuevo. Lanza DomainException si algo no es valido.
 
             // encabezado del pedido
             $insertarPedido = $this->conexion->prepare(
-                "INSERT INTO pedido (nombre, idMesa, estado, total)
-                 VALUES (:nombre, :idMesa, :estado, 0)"
+                "INSERT INTO pedido
+                    (nombre, idMesa, idUsuario, idReserva, fechaHoraProgramada, estado, total)
+                 VALUES
+                    (:nombre, :idMesa, :idUsuario, :idReserva, :programada, :estado, 0)"
             );
+
             $insertarPedido->execute([
                 ':nombre' => $nombre,
                 ':idMesa' => $idMesa,
+                ':idUsuario' => $extra['idUsuario'] ?? null,
+                ':idReserva' => $extra['idReserva'] ?? null,
+                ':programada' => $extra['programada'] ?? null,
                 ':estado' => EstadoPedido::POR_CONFIRMAR,
             ]);
 
@@ -227,6 +260,18 @@ Devuelve el id del pedido nuevo. Lanza DomainException si algo no es valido.
                 ':idPedido' => $idPedido,
             ]);
 
+            if (isset($extra['metodoPago'])) {
+                $pago = $this->conexion->prepare(
+                    "INSERT INTO pago (idPedido, fecha, metodoPago, totalPago, estado, hora)
+                     VALUES (:idPedido, CURDATE(), :metodo, :total, 'pagado', CURTIME())"
+                );
+                $pago->execute([
+                    ':idPedido' => $idPedido,
+                    ':metodo' => $extra['metodoPago'],
+                    ':total' => $total,
+                ]);
+            }
+
             $this->conexion->commit();
 
             return $idPedido;
@@ -237,6 +282,42 @@ Devuelve el id del pedido nuevo. Lanza DomainException si algo no es valido.
 
             throw $e;
         }
+    }
+
+    public function resumenCarrito(array $cantidades)
+    {
+        if (count($cantidades) === 0) {
+            throw new DomainException('Tu pedido está vacío.');
+        }
+
+        $ids = array_keys($cantidades);
+        $marcas = implode(', ', array_fill(0, count($ids), '?'));
+
+        $consulta = $this->conexion->prepare(
+            "SELECT idProducto, nombre, precio
+             FROM producto
+             WHERE estado = 'activo' AND idProducto IN ($marcas)
+             ORDER BY nombre ASC"
+        );
+        $consulta->execute($ids);
+        $lineas = $consulta->fetchAll();
+
+        if (count($lineas) !== count($ids)) {
+            throw new DomainException('Hay productos que ya no están disponibles.');
+        }
+
+        $total = 0;
+
+        foreach ($lineas as $indice => $linea) {
+            $cantidad = $cantidades[(int) $linea['idProducto']];
+
+            $lineas[$indice]['cantidad'] = $cantidad;
+            $lineas[$indice]['subtotal'] = $linea['precio'] * $cantidad;
+
+            $total += $lineas[$indice]['subtotal'];
+        }
+
+        return ['lineas' => $lineas, 'total' => $total];
     }
 
 // ==================================================================================================
@@ -360,6 +441,18 @@ Cuando ya no queda ningun producto por servir, el pedido pasa a "por pagar".
             ]);
 
             if ((int) $pendientes->fetch()['total'] === 0) {
+
+                $yaPagado = $this->conexion->prepare(
+                    "SELECT COUNT(*) AS total
+                     FROM pago
+                     WHERE idPedido = :idPedido AND estado = 'pagado'"
+                );
+                $yaPagado->execute([':idPedido' => $linea['idPedido']]);
+
+                $estadoFinal = ((int) $yaPagado->fetch()['total'] > 0)
+                    ? EstadoPedido::COMPLETADO
+                    : EstadoPedido::POR_PAGAR;
+
                 $cerrar = $this->conexion->prepare(
                     "UPDATE pedido
                      SET estado = :nuevo
@@ -367,7 +460,7 @@ Cuando ya no queda ningun producto por servir, el pedido pasa a "por pagar".
                        AND estado = :actual"
                 );
                 $cerrar->execute([
-                    ':nuevo' => EstadoPedido::POR_PAGAR,
+                    ':nuevo' => $estadoFinal,
                     ':idPedido' => $linea['idPedido'],
                     ':actual' => EstadoPedido::EN_PREPARACION,
                 ]);

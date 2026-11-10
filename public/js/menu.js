@@ -146,7 +146,8 @@ botonesAgregar.forEach(function(boton){
 
             // ==================================================================================================================
 
-            const producto = { 
+            const producto = {
+                id : Number(boton.dataset.id),
                 nombre : boton.dataset.agregar,
                 precio : Number(boton.dataset.precio),
                 cantidad : 1
@@ -155,9 +156,11 @@ botonesAgregar.forEach(function(boton){
 
             // identidicar si existe mas de un mismo producto
             const productoExistente = pedido.find(function(item){
-                return item.nombre === producto.nombre;
+                return item.id === producto.id;
 
             });
+
+            // ==================================================================================================================
 
             if(productoExistente){
                 productoExistente.cantidad++;
@@ -179,7 +182,18 @@ botonRealizarPedido.addEventListener('click', function(){
         return;
     }
 
-    alert('Pedido realizado correctamente.');
+    // envia SOLO id y cantidad (los precios los pone el servidor)
+    const formulario = document.querySelector('#form-pedido');
+
+    pedido.forEach(function(producto){
+        const campo = document.createElement('input');
+        campo.type = 'hidden';
+        campo.name = 'cantidad[' + producto.id + ']';
+        campo.value = producto.cantidad;
+        formulario.appendChild(campo);
+    });
+
+    formulario.submit();
 
 });
 

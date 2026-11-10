@@ -2,6 +2,8 @@
 
 require __DIR__ ."/../models/MesaModel.php";
 require_once __DIR__ . '/../models/ReservaModel.php';
+require_once __DIR__ . '/../helpers/HorarioHabilHelper.php';
+
 class ReservaController
 {
     public function index()
@@ -56,6 +58,16 @@ class ReservaController
             $fechaHora <= new DateTime()
         ) {
             $_SESSION['mensaje_reserva'] = 'Selecciona una fecha y hora futuras válidas.';
+
+            header('Location: /PJF/reserva');
+            exit;
+        }
+
+        // VALIDAR HORARIO HABIL (la reserva debe terminar antes del cierre)
+        $motivo = HorarioHabil::validar($fechaHora, HorarioHabil::DURACION_RESERVA_MIN);
+
+        if ($motivo !== null) {
+            $_SESSION['mensaje_reserva'] = $motivo;
 
             header('Location: /PJF/reserva');
             exit;

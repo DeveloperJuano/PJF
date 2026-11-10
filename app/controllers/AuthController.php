@@ -4,10 +4,6 @@ require_once __DIR__ . '/../models/UsuarioModel.php';
 
 class AuthController
 {
-    public function mostrarLogin()
-    {
-        require_once __DIR__ . '/../views/auth/login.php';
-    }
 
     public function login()
     {

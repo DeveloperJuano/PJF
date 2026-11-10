@@ -71,6 +71,21 @@
             </div>
         </section>
 
+        <!-- MENSAJES DEL PEDIDO -->
+        <?php if (isset($_SESSION['mensaje_pedido'])): ?>
+            <div class="container">
+                <div class="alert alert-info text-center" role="alert">
+                    <?= e($_SESSION['mensaje_pedido']) ?>
+                </div>
+            </div>
+            <?php unset($_SESSION['mensaje_pedido']); ?>
+        <?php endif; ?>
+
+        <!-- Formulario oculto: el JS le agrega cantidad[idProducto] y lo envia -->
+        <form id="form-pedido" action="/PJF/pedido/resumen" method="POST" hidden>
+            <?= Csrf::campo() ?>
+        </form>
+
         <!-- BOTÓN PEDIDO -->
         <button type="button" id="abrirPedido">
             Mi pedido
@@ -126,7 +141,8 @@
                                     <?= $producto['precio'] ?>
                                 </span>
 
-                                <button type="button" 
+                                <button type="button"
+                                    data-id="<?= (int) $producto['idProducto'] ?>"
                                     class="btn" 
                                     data-agregar="<?= $producto['nombre'] ?>"
                                     data-precio="<?= $producto['precio'] ?>"

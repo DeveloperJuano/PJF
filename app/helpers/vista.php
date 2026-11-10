@@ -27,3 +27,19 @@ if (!function_exists('minutos')) {
         return intdiv(max(0, (int) $segundos), 60);
     }
 }
+
+// numero de mesa => "Mesa 3"; NULL (pedido sin mesa) => "Para llevar"
+if (!function_exists('lugar')) {
+    function lugar($mesa)
+    {
+        return ($mesa === null || $mesa === '') ? 'Para llevar' : 'Mesa ' . $mesa;
+    }
+}
+
+// "2026-11-10 18:30:00" => "10/11 18:30"
+if (!function_exists('fechaCorta')) {
+    function fechaCorta($fechaHora)
+    {
+        return $fechaHora ? date('d/m H:i', strtotime($fechaHora)) : '';
+    }
+}
